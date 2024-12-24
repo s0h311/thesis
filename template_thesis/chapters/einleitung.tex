@@ -1,0 +1,13 @@
+\chapter{Einleitung}
+
+\section{Die Rolle des State-Managements in Frontend Webapplikationen}
+
+Moderne Webapplikationen folgen der Komponenten-Architektur. Verschiedene Komponenten können von den selben Daten abhängig sein. Die Daten werden in der Regel während der Lebensdauer der Browser-Session basierend auf Interaktionen des Benutzers aktualisiert und erweitert. Änderungen in den Daten müssen den betroffenen Komponenten mitgeteilt werden. In einigen Fällen ist die Synchronisierung der Daten im Frontend mit den Daten des Servers erforderlich. Um HTTP Aufrufe zu sparen, können verschiedene Mechanismen, wie beispielsweise Caching oder Debouncing verwendet werden. Diese Faktoren erhöhen, die ohnehin schon hohe Komplexität und Fehleranfälligkeit zusätzlich.
+
+Um diese Komplexität effizient zu verwalten, werden State-Management Lösungen wie Redux \ref{fig:redux}, NgRx \ref{fig:ngrx} oder Pinia \ref{fig:pinia} verwendet. Mit Hilfe dieser Open Source JavaScript Bibliotheken, können Daten beim Bedarf von einer API abgerufen, transformiert und im Speicher gespeichert werden. Die meisten State-Management Bibliotheken sind eng mit einem UI-Framework gekoppelt. \ref{fig:ui-frameworks-and-state-management}. Aus diesem Grund sind sie ein fundamentaler Baustein jeder größeren Frontend Webapplikation.
+
+\section{Ziel dieser Arbeit}
+
+Mit der Komplexität erhöht sich auch die Fehleranfälligkeit. Fehler im Zustand, also Daten der Applikation, haben einen direkten Einfluss auf das Angezeigte. Wenn die Applikation sich in einem "falschen" Zustand befindet und es keine Laufzeitfehler gab, können die Verantwortlichen (in der Regel, die Entwickler) unter Umständen, nicht darüber informiert sein. Dies führt zu langlebigen Bugs.
+
+Ziel dieser Arbeit ist es, einen Ansatz zu erarbeiten, bei dem die Möglichkeit eines Befindens in einem "falschen" oder "illegalem" Zustand eliminiert wird. Dazu wird jeder zusammenhänge Teil des Zustands als ein endlicher Automat \ref{fig:fa} abgebildet. Dahingehend wird jede Änderung in diesem Zustand wie ein Übergang bei einem endlichen Automaten behandelt. Es wird vorgeschlagen die beliebten State-Management Lösungen um "strikte" Übergänge, wie bei einem DFA, zu erweitern. Auf diesem Wege wird eine Reduzierung von Bugs in größeren Applikationen bestrebt. Dabei wird insbesondere auf die Lesbarkeit und Wartbarkeit des Quellcodes und die Developer Experience geachtet.
