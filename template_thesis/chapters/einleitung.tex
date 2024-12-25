@@ -7,8 +7,16 @@ Moderne Webseiten folgen dem Single Page Appliaction (SPA) Ansatz. Dem nach blei
 
 Um diese Komplexität effizient zu verwalten, werden State-Management Lösungen wie Redux, NgRx oder Pinia verwendet. Mit Hilfe dieser Open Source JavaScript Bibliotheken, können Daten beim Bedarf von einer API abgerufen, transformiert und gespeichert werden. Die meisten State-Management Bibliotheken sind eng mit einem UI-Framework gekoppelt. Aus diesem Grund sind sie ein fundamentaler Baustein jeder größeren Frontend Webapplikation.
 
-\section{Ziel dieser Arbeit}
+\section{Ziel der Arbeit}
 
 Mit der Komplexität erhöht sich auch die Fehleranfälligkeit. Fehler im Zustand, also Daten der Applikation, haben einen direkten Einfluss auf das Angezeigte. Wenn die Applikation sich in einem \q{falschen} Zustand befindet und es keine Laufzeitfehler gab, können die Verantwortlichen (in der Regel, die Entwickler) unter Umständen, nicht darüber informiert sein. Dies führt zu langlebigen Bugs.
 
 Ziel dieser Arbeit ist es, einen Ansatz zu erarbeiten, bei dem die Möglichkeit eines Befindens in einem \q{falschen} oder \q{illegalem} Zustand eliminiert wird. Dazu wird jeder zusammenhänge Teil des Zustands als ein endlicher Automat abgebildet. Dahingehend wird jede Änderung in diesem Zustand wie ein Übergang bei einem endlichen Automaten behandelt. Es wird vorgeschlagen die beliebten State-Management Lösungen um \q{strikte} Übergänge, wie bei einem DFA, zu erweitern. Auf diesem Wege wird eine Reduzierung von Bugs in größeren Applikationen bestrebt. Dabei wird insbesondere auf die Lesbarkeit und Wartbarkeit des Quellcodes und die Developer Experience geachtet.
+
+Folgende Forschungsfragen werden behandelt:
+
+\begin{enumerate}
+  \item Können Bugs, die Aufgrund eines falschen Zustandes entstehen, mit Hilfe von \q{strikten} Übergängen reduziert werden?
+  \item Steigt oder sinkt die Developer-Experience?
+  \item Steigt oder sinkt die Lesbarkeit und Wartbarkeit des Codes?
+\end{enumerate}
