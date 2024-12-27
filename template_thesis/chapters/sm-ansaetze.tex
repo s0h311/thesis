@@ -59,7 +59,19 @@ Es wird folgende Struktur für Reducer empfohlen:
   }
 \end{lstlisting}
 
-Es wird die \textit{Spread Syntax: ...} aus ECMAScript 15 genutzt, um as ursprüngliche Zustandsobjekt zu klonen.
+Es wird die \textit{Spread Syntax: ...} aus ECMAScript 15 genutzt, um as ursprüngliche Zustandsobjekt zu klonen.\cite{mdnSpreadSyntax}
+
+\subsection{Zusammenführung}
+
+Der Store wird mit Hilfe der \textit{createStore} API erstellt. Als Parameter wird die Reducer-Function übergeben. Der Rückgabewert ist das Store-Objekt. Dieses bietet Zugang zu unteranderem \textit{dispatch} und \textit{getState} Methoden. Mit diesen kann jeweils Actions versendet und aus dem Store gelesen werden.
+
+\begin{lstlisting}
+  const store = createStore(reducer)
+
+  store.dispatch(action)
+
+  const user = store.getState().user
+\end{lstlisting}
 
 \begin{figure}[h!]
 \includegraphics[width=1\textwidth]{state-management-lifecycle.png}
