@@ -11,13 +11,55 @@ Redux definiert sich durch folgenden frei Eigenschaften:
   \item Unveränderlichkeit (Immutability): Änderung am State sind ausschließlich über die APIs von Redux möglich.
   \item Zentralisierung des Zustandes: Der gesamte Applikationszustand lebt in einem zentral JavaScript Objekt.
   \item Nachvollzierbarkeit (Traceability): Während der gesamten Lebensdauer der Applikation sind Änderungen am Zustand auf deren Ursprung verfolgbar.
+  \item Event basiert: Es wird das Beobachter-Muster (Observer Pattern) verwendet.
 \end{enumerate}
 
 Um dies zu erreichen, werden zwei verschienede APIs zur Verfügung gestellt. Diese sind \textit{actions} und \textit{reducer}. Außerdem können optionale \textit{selectors} benutzt werden um aus bestimmten Teilen des Zustandes zu lesen.
 
 \subsection{Actions}
 
-Eine Aktion (Action) beschreibt eine Änderung oder Interaktion in der und mit der Applikation. Beispielsweise könnte eine \textit{counter-clicked} Action versendet (dispatch) werden, wenn der Nutzer auf den \textit{Zähler erhöhen} Button drückt. Oder, wenn der Nutzer sich erfolgreich angemeldet hat, kann eine entsprechende Action versendet werden. Intern ist eine Action eine POJO
+Eine Aktion (Action) beschreibt eine Änderung oder Interaktion in der und mit der Applikation. Beispielsweise könnte eine \textit{counter-clicked} Action versendet (dispatch) werden, wenn der Nutzer auf den \textit{Zähler erhöhen} Button drückt. Oder, wenn der Nutzer sich erfolgreich angemeldet hat, kann eine entsprechende Action versendet werden. Intern ist eine Action ein POJO.\cite{reduxStateActionReducers}
+
+Es wird folgende Struktur für Actions empfohlen:
+\begin{lstlisting}
+  const action = {
+    type: 'user-logged-in',
+    payload: {
+      userId: 1234
+    },
+  }
+\end{lstlisting}
+
+Das Feld \textit{type} beschreibt die Action und das optionale Feld \textit{payload} enthält weiterführende Daten.
+
+\subsection{Reducer}
+
+Ein Reducer übernimmt die Rolle des Beobachters und ist für die Initialisierung und Aktualisierung des Zustandes zuständig. Ein Reducer wird als eine Pure-Funtion mit zwei Parametern definiert.
+Der erste Parameter ist das Zustandsobjekt und der zweite die Action. Der Rückgabewert der dieser Callback-Funcion ist das neue Zustandsobjekt. Da es sich hier um eine Pure-Funtion handelt, dürfen es hier keine Seiteneffekte stattfinden. Wie anfangserwähnt, ist der Zustand Unveränderlich, daher dürfen hier keine direkten Veränderungen des Zustandes stattfinden. Es wird lediglich ein neues Objekt zurückgegeben. Fall es keine Veränderungen stattfinden sollen, kann das ursprüngliche Objekt aus dem ersten Parameter unverändert zurückgegeben werden.\cite{reduxStateActionReducers}
+
+Es wird folgende Struktur für Reducer empfohlen:
+\begin{lstlisting}
+  function reducer(state = { user: null }, action) {
+    switch (action.type) {
+      case 'user-logged-in':
+        return {
+          ...state,
+          user: {
+            userId: action.payload.userId
+          },
+        }
+      case 'user-logged-out':
+        return {
+          ...state,
+          user: null,
+        }
+      default:
+        return state
+    }
+  }
+\end{lstlisting}
+
+Es wird die \textit{Spread Syntax: ...} aus ECMAScript 15 genutzt, um as ursprüngliche Zustandsobjekt zu klonen.
 
 \begin{figure}[h!]
 \includegraphics[width=1\textwidth]{state-management-lifecycle.png}
