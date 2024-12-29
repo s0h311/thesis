@@ -4,30 +4,29 @@ Bei den populären SM Lösungen folgen Redux und NgRx dem Flux-Pattern\cite{hist
 
 \section{Redux}
 
-Im Folgenden wird die Funktionsweise und die Eigenschaften von Redux näher beschrieben. Diese gelten ebenfalls für NgRx.
+Im Folgenden wird die Funktionsweise und die Eigenschaften von Redux näher beschrieben Die APIs von NgRx unterscheiden sich aufgrund von Bequemlichkeit, allerdings sind die Konzepte immer noch anwendbar.
 
-Redux definiert sich durch folgenden frei Eigenschaften:
+Redux definiert sich durch folgenden drei Eigenschaften:
 \begin{enumerate}
   \item Unveränderlichkeit (Immutability): Änderung am State sind ausschließlich über die APIs von Redux möglich.
-  \item Zentralisierung des Zustandes: Der gesamte Applikationszustand lebt in einem zentral JavaScript Objekt.
+  \item Zentralisierung des Zustandes: Der gesamte Applikationszustand lebt in einem zentralen JavaScript Objekt.
   \item Nachvollzierbarkeit (Traceability): Während der gesamten Lebensdauer der Applikation sind Änderungen am Zustand auf deren Ursprung verfolgbar.
   \item Event basiert: Es wird das Beobachter-Muster (Observer Pattern) verwendet.
 \end{enumerate}
 
-Um dies zu erreichen, werden zwei verschienede APIs zur Verfügung gestellt. Diese sind \textit{actions} und \textit{reducer}. Außerdem können optionale \textit{selectors} benutzt werden um aus bestimmten Teilen des Zustandes zu lesen.
+Das Verhalten des Stores wird durch \textit{actions} und \textit{reducer} definiert.
+% Außerdem können optionale \textit{selectors} benutzt werden um aus bestimmten Teilen des Zustandes zu lesen.
 
 \subsection{Actions}
 
-Eine Aktion (Action) beschreibt eine Änderung oder Interaktion in der und mit der Applikation. Beispielsweise könnte eine \textit{counter-clicked} Action versendet (dispatch) werden, wenn der Nutzer auf den \textit{Zähler erhöhen} Button drückt. Oder, wenn der Nutzer sich erfolgreich angemeldet hat, kann eine entsprechende Action versendet werden. Intern ist eine Action ein POJO.\cite{reduxStateActionReducers}
+Eine Aktion (Action) beschreibt eine Änderung oder Interaktion in und mit der Applikation. Beispielsweise könnte eine \textit{counter-clicked} Action versendet (dispatch) werden, wenn der Nutzer auf den \textit{Zähler erhöhen} Button drückt. Oder, wenn der Nutzer sich erfolgreich angemeldet hat, kann eine entsprechende Action versendet werden. Intern ist eine Action ein POJO.\cite{reduxStateActionReducers}
 
 Es wird folgende Struktur für Actions empfohlen:
 \begin{lstlisting}
-  const action = {
-    type: 'user-logged-in',
-    payload: {
-      userId: 1234
-    },
-  }
+type Action<T> = {
+  type: string,
+  payload: T
+}
 \end{lstlisting}
 
 Das Feld \textit{type} beschreibt die Action und das optionale Feld \textit{payload} enthält weiterführende Daten.
@@ -39,38 +38,44 @@ Der erste Parameter ist das Zustandsobjekt und der zweite die Action. Der Rückg
 
 Es wird folgende Struktur für Reducer empfohlen:
 \begin{lstlisting}
-  function reducer(state = { user: null }, action) {
-    switch (action.type) {
-      case 'user-logged-in':
-        return {
-          ...state,
-          user: {
-            userId: action.payload.userId
-          },
-        }
-      case 'user-logged-out':
-        return {
-          ...state,
-          user: null,
-        }
-      default:
-        return state
-    }
-  }
+type Reducer<S, A> = (state: S, action: A) => S
 \end{lstlisting}
 
-Es wird die \textit{Spread Syntax: ...} aus ECMAScript 15 genutzt, um as ursprüngliche Zustandsobjekt zu klonen.\cite{mdnSpreadSyntax}
+Beispiel reducer:
 
-\subsection{Zusammenführung}
+\begin{lstlisting}
+function reducer(state = { user: null }, action) {
+  switch (action.type) {
+    case 'user-logged-in':
+      return {
+        ...state,
+        user: {
+          userId: action.payload.userId
+        },
+      }
+    case 'user-logged-out':
+      return {
+        ...state,
+        user: null,
+      }
+    default:
+      return state
+  }
+}
+\end{lstlisting}
+
+Es wird die \textit{Spread Syntax: ...} aus ECMAScript 6 genutzt, um as ursprüngliche Zustandsobjekt zu klonen.\cite{mdnSpreadSyntax}
+
+\subsection{Interaktion mit dem Store}
 
 Der Store wird mit Hilfe der \textit{createStore} API erstellt. Als Parameter wird die Reducer-Function übergeben. Der Rückgabewert ist das Store-Objekt. Dieses bietet Zugang zu unteranderem \textit{dispatch} und \textit{getState} Methoden. Mit diesen kann jeweils Actions versendet und aus dem Store gelesen werden.
 
 \begin{lstlisting}
-  const store = createStore(reducer)
+import { createStore } from 'redux'
 
-  store.dispatch(action)
-
-  const user = store.getState().user
+const store = createStore(reducer)
+store.dispatch(action)
+const user = store.getState().user
 \end{lstlisting}
 
 \begin{figure}[h!]
