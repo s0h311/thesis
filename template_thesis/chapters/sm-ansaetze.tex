@@ -1,10 +1,8 @@
 \chapter{State-Management Ansätze} \label{sm-ansaetze}
 
-Bei den populären SM Lösungen folgen Redux und NgRx dem Flux-Pattern\cite{historyOfRedux}\cite{ngrxGettingStarted}, wobei Zustand und Pinia einen anderen, Framework-nahen Ansatz verfolgen.
+Bei den populären SM Lösungen folgt Redux und NgRx dem Flux-Pattern\cite{historyOfRedux}\cite{ngrxGettingStarted}, wobei Zustand und Pinia einen anderen, Framework-nahen Ansatz verfolgen. Im Folgenden wird die Funktionsweise und die Eigenschaften von Redux und Pinia näher beschrieben. Da diese grundlegend unterschiedliche Ansätze verfolgen und andere SM-Lösungen sich einem der beiden ähneln.
 
 \section{Redux}
-
-Im Folgenden wird die Funktionsweise und die Eigenschaften von Redux näher beschrieben. Die APIs von NgRx unterscheiden sich aufgrund von Bequemlichkeit, allerdings sind die Konzepte immer noch anwendbar.
 
 Redux definiert sich durch folgenden vier Eigenschaften:
 \begin{enumerate}
@@ -121,10 +119,9 @@ Der Store kann in einer belibiegen Vue-Komponente importiert werden. Die Felder 
 
 \begin{lstlisting}
   const userStore = useUserStore()
-  const user = userStore.user
-  function updateUser(newUser) {
-    userStore.updateUser(newUser)
-  }
+  
+  // userStore.user
+  // userStore.updateUser
 \end{lstlisting}
 
-Die Desktrukturierung (destructuring) des Store-Objekts, im oberen Beispiel \textit{userStore}, führt zur Verlust der Reaktivität. Aus diesem Grund wird die Punktnotation empfohlen.\cite{piniaDefiningAStore}
+Die State im oberen Beipiel ist reaktiv und kann als \textit{userStore.user} im Template der Komponente referenziert werden. Die Desktrukturierung (destructuring) des Store-Objekts, im oberen Beispiel \textit{userStore}, führt zur Verlust der Reaktivität. Aus diesem Grund wird die Punktnotation empfohlen.\cite{piniaDefiningAStore}
