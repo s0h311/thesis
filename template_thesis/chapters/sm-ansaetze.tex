@@ -1,16 +1,16 @@
-\chapter{State-Management Ansätze}
+\chapter{State-Management Ansätze} \label{sm-ansaetze}
 
 Bei den populären SM Lösungen folgen Redux und NgRx dem Flux-Pattern\cite{historyOfRedux}\cite{ngrxGettingStarted}, wobei Zustand und Pinia einen anderen, Framework-nahen Ansatz verfolgen.
 
 \section{Redux}
 
-Im Folgenden wird die Funktionsweise und die Eigenschaften von Redux näher beschrieben Die APIs von NgRx unterscheiden sich aufgrund von Bequemlichkeit, allerdings sind die Konzepte immer noch anwendbar.
+Im Folgenden wird die Funktionsweise und die Eigenschaften von Redux näher beschrieben. Die APIs von NgRx unterscheiden sich aufgrund von Bequemlichkeit, allerdings sind die Konzepte immer noch anwendbar.
 
-Redux definiert sich durch folgenden drei Eigenschaften:
+Redux definiert sich durch folgenden vier Eigenschaften:
 \begin{enumerate}
-  \item Unveränderlichkeit (Immutability): Änderung am State sind ausschließlich über die APIs von Redux möglich.
+  \item Unveränderlichkeit (Immutability): Änderung am State sind ausschließlich über die APIs von Redux unter Beachtung der Unveränderlichkeit möglich.
   \item Zentralisierung des Zustandes: Der gesamte Applikationszustand lebt in einem zentralen JavaScript Objekt.
-  \item Nachvollzierbarkeit (Traceability): Während der gesamten Lebensdauer der Applikation sind Änderungen am Zustand auf deren Ursprung verfolgbar.
+  \item Nachvollzierbarkeit (Traceability): Während der gesamten Lebensdauer der Applikation, sind Änderungen am Zustand auf deren Ursprung verfolgbar.
   \item Event basiert: Es wird das Beobachter-Muster (Observer Pattern) verwendet.
 \end{enumerate}
 
@@ -25,7 +25,7 @@ Es wird folgende Struktur für Actions empfohlen:
 \begin{lstlisting}
 type Action<T> = {
   type: string,
-  payload: T
+  payload?: T
 }
 \end{lstlisting}
 
@@ -33,8 +33,8 @@ Das Feld \textit{type} beschreibt die Action und das optionale Feld \textit{payl
 
 \subsection{Reducer}
 
-Ein Reducer übernimmt die Rolle des Beobachters und ist für die Initialisierung und Aktualisierung des Zustandes zuständig. Ein Reducer wird als eine Pure-Funtion mit zwei Parametern definiert.
-Der erste Parameter ist das Zustandsobjekt und der zweite die Action. Der Rückgabewert der dieser Callback-Funcion ist das neue Zustandsobjekt. Da es sich hier um eine Pure-Funtion handelt, dürfen es hier keine Seiteneffekte stattfinden. Wie anfangserwähnt, ist der Zustand Unveränderlich, daher dürfen hier keine direkten Veränderungen des Zustandes stattfinden. Es wird lediglich ein neues Objekt zurückgegeben. Fall es keine Veränderungen stattfinden sollen, kann das ursprüngliche Objekt aus dem ersten Parameter unverändert zurückgegeben werden.\cite{reduxStateActionReducers}
+Ein Reducer ist für die Initialisierung und Aktualisierung des Zustandes zuständig. Ein Reducer wird als eine Pure-Function mit zwei Parametern definiert.
+Der erste Parameter ist das Zustandsobjekt und der zweite die versendete Action. Der Rückgabewert dieser Funktion ist das neue Zustandsobjekt. Da es sich hier um eine Pure-Funtion handelt, dürfen es hier keine Seiteneffekte stattfinden. Wie anfangserwähnt, ist der Zustand Unveränderlich, daher dürfen hier keine direkten Veränderungen des Zustandes stattfinden. Es wird lediglich ein neues Objekt zurückgegeben. Fall es keine Veränderungen stattfinden sollen, kann das ursprüngliche Objekt aus dem ersten Parameter unverändert zurückgegeben werden.\cite{reduxStateActionReducers}
 
 Es wird folgende Struktur für Reducer empfohlen:
 \begin{lstlisting}
