@@ -66,7 +66,7 @@ function reducer(state = { user: null }, action) {
 
 Es wird die \textit{Spread Syntax: ...} aus ECMAScript 6 genutzt, um as ursprüngliche Zustandsobjekt zu klonen.\cite{mdnSpreadSyntax}
 
-\subsection{Interaktion mit dem Store}
+\subsection{Definition und Interaktion mit dem Store}
 
 Der Store wird mit Hilfe der \textit{createStore} API erstellt. Als Parameter wird die Reducer-Function übergeben. Der Rückgabewert ist das Store-Objekt. Dieses bietet Zugang zu unteranderem \textit{dispatch} und \textit{getState} Methoden. Mit diesen kann jeweils Actions versendet und aus dem Store gelesen werden.
 
@@ -101,7 +101,7 @@ Eine Action ist eine Methode, die den State verändert und in einem \textit{acti
 Zu Definition eines Stores wird die \textit{defineStore} API genutzt. Als Parameter wird ein eindeutiger Name und eine Beschreibung des Stores in Form eines Objekts übergeben. In dem zweiten Paramter werden die Felder \textit{state} und \textit{actions} definiert.
 
 \begin{lstlisting}
-const userStore = defineStore('user-store', {
+const useUserStore = defineStore('user-store', {
   state: () => {
     user: null
   },
@@ -117,3 +117,14 @@ Auf die Felder in dem State-Objekt wird in einer Action mit \textit{this} zugegr
 
 \subsection{Interaktion mit dem Store}
 
+Der Store kann in einer belibiegen Vue-Komponente importiert werden. Die Felder des Objekts, das von der state Funktion zurückgegeben wird, werden automatisch zu Feldern des Store Objekts. Genauso werden auch die Methoden des Actions-Objekts auch zu Member des Store Objekts.
+
+\begin{lstlisting}
+  const userStore = useUserStore()
+  const user = userStore.user
+  function updateUser(newUser) {
+    userStore.updateUser(newUser)
+  }
+\end{lstlisting}
+
+Die Desktrukturierung (destructuring) des Store-Objekts, im oberen Beispiel \textit{userStore}, führt zur Verlust der Reaktivität. Aus diesem Grund wird die Punktnotation empfohlen.\cite{piniaDefiningAStore}
