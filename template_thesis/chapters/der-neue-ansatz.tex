@@ -21,7 +21,7 @@ Der TypeScript-Faktor macht Webapplikationen, somit auch State-Management auf Ty
 
   type FetchSuccessfulAction = {
     type: 'fetch-successful',
-    payload: any[]
+    payload: Array<any>
   }
 
   type FetchFailedAction = {
@@ -56,11 +56,19 @@ Der TypeScript-Faktor macht Webapplikationen, somit auch State-Management auf Ty
   const store = createStore(reducer)
 \end{lstlisting}
 
-Es ist erlaubt, die \textit{FetchSuccessfulAction} Aktion zu versenden, ohne voher die \textit{Fetch} Aktion versendet zu haben. Das heißt \textit{items} wurden erfolgreich abrufen, ohne die Anfrage zuvor gemacht zuhaben. Seitens Redux ist das Versenden einer Aktion immer, unbeachtet des aktuellen Zustandes, erlaubt. Dieser Faktor spricht gegen die Nachvollziehbarkeit. Es wird vorgeschlagen Übergänge wie bei einem DFA für den Store zu definieren und den Zustandswechsel wie eine Übergangsfunktion zu behandeln. Dabei werden die Zustände, im oberen Fall \textit{'fetching'}, \textit{Error} und und \textit{any[]}, als Zustände des DFAs zu behandelt. Restliche Eigenschaften des Quintupels eines DFAs werden hierbei ignoriert.
+Es ist erlaubt, die \textit{FetchSuccessfulAction} Aktion zu versenden, ohne voher die \textit{Fetch} Aktion versendet zu haben. Das heißt \textit{items} wurden erfolgreich abrufen, ohne die Anfrage zuvor gemacht zuhaben. Seitens Redux ist das Versenden einer Aktion immer, unbeachtet des aktuellen Zustandes, erlaubt. Dieser Faktor spricht gegen die Nachvollziehbarkeit und gilt für alle populäre SM Lösungen. Es wird vorgeschlagen Übergänge wie bei einem DFA für den Store zu definieren und den Zustandswechsel wie eine Übergangsfunktion zu behandeln. Dabei werden die Zustände, im oberen Fall \textit{'not-fetched'}, \textit{'fetching'}, \textit{Error} und und \textit{Array<any>}, als Zustände des DFAs behandelt. Restliche Eigenschaften des Quintupels eines DFAs werden hierbei ignoriert.
 
-Abweichend von DFAs, sind die Zustände in Webapplikationen nicht immer serialisierbar und eindeutig. Im oberen Beispiel, ist der Zustand 'fetching' ein String und somit serialisierbar, allerdings sind die restlichen Zustände nicht serialisierbar (Zustand vom Typ Error) und eindeutig (Zustand vom Typ any[]). Um dieses Problem zu umgehen, wird eine \textit{Kondition} Funktion emfohlen, die ein Boolean zurück gibt. Als Paramter wird der aktuelle Zustand wie folgt übergeben:
+Um die Übergangsfunktion zu definieren, wird eine Liste aller Aktionen benötigt, die bei einem bestimmten Zustand erlaubt sind. Ein Problem hierbei ist allerdings, dass die Identifizierbarkeit der einzelnen Zustände nicht garantiert ist.
+Abweichend von DFAs, sind die Zustände in Webapplikationen nicht immer serialisierbar. Nicht serialisierbare Objekte sind nicht immer identifizierbar. Im oberen Beispiel, sind die Zustände \textit{'not-fetched'} und \textit{'fetching'} vom Type String und somit serialisierbar, allerdings sind die restlichen Zustände nicht serialisierbar (Zustand vom Typ Error und Array<any>). Um dieses Problem zu umgehen, wird eine \textit{Kondition Funktion} emfohlen, um zwischen verschiedenen Zuständen zu unterscheiden. Sie akzeptiert als Paramter den aktuellen Zustand und gibt ein Boolean zurück.
 
 \begin{lstlisting}
 type Condition<S> = (state: S) => boolean
 \end{lstlisting}
 
+% ODER SO:
+% Sei $S$ die Menge aller Zustände und $B := \{true, false\}$, dann wird die \textit{Konfition FunKtion} wie folgt definitiert:
+% $f(s) = b | s \in S \land b \in B$
+
+Mit dieser Funktion kann jeder Zustand identifiziert werden. Bei JavaScript Klassen, kann der \textit{instanceof} Operator genutzt werden, um auf die Instanz einer Klasse wie \textit{Error} zu prüfen.\cite{jsInstanceofOperator} Desweiteren, können bei Objekten auf eindeutige Eigenschaften, wie die Präzens eines Feldes per \textit{in} Operator geprüft werden.\cite{jsInOperator} Bei Arrays kann die \textit{Array.isArray} Funktion verwendet werden.\cite{jsIsArray} Durch die Kombinition dieser und weiteren Funktionen und Operatoren können weitere Datentypen und Fälle identifiziert werden.
+
+Jeder Übergang wird mit einer \textit{Validierungsfunktion} validiert. Diese prüft auf die Gültigkeit eines Übergangs und wirft einen Laufzeitfehler bei ungültigen Aufrufen. Falls der Übergang gültig ist, wirft sie keine  Fehler und der Zustandswechsel kann stattfinden. Der Laufzeitfehler sorgt dafür, dass der ungültige Aufruf berichtet wird und sich nicht zu einem langlebigen Bug entwicklen kann.
