@@ -1,16 +1,20 @@
 \chapter{Der neue Ansatz} \label{der-neue-ansatz}
 
+\section{Steigende Robustheit durch TypeScript}
+
 % Mehr Projekte nutzen TypeScript => sind bereits was Typing angeht robust
 % TypeScript ist auch in fast allen IDEs integriert, also wird fast von jedem genutzt.
 TypeScript verfügt, im Gegensatz zu JavaScript, über statische Typisierung. Dank der statischen Typisierung sind Operationen wie \textit{Go to Definition} und \textit{Go to Implementations} der Entwicklungsumgebungen (IDE) möglich. Diese Eigenschaften reduzieren Fehler im Zusammenhang mit falschen Typen erheblich. Wie in \ref{fig:js-und-ts-nutzung-2018-2024} abgebildet, wird TypeScript von immer mehr Entwicklern genutzt, während die JavaScript Nutzung abnimmt. \ref{fig:js-und-ts-nutzung-2018-2024} beinhaltet die tatsächliche Nutzung von TS nicht. Der TypeScript Compiler (tsc) ist in den meisten modernen IDEs, wie Visual Studio Code und den JetBrains IDEs wie IntelliJ IDEA und WebStorm integriert. Dies führt dazu, dass man auch beim JavaScript Code einige Vorteile von TypeScript bekommt.\cite{typeScriptDocumentary}
 
-\begin{figure}[h!]
+\begin{figure}[H]
   \includegraphics[width=1\textwidth]{js-und-ts-nutzung-2018-2024.png}
   \caption{Prozentuale Nutzung von JavaScript und TypeScript unter professionellen Entwicklern von 2018 bis 2024}
   \label{fig:js-und-ts-nutzung-2018-2024}
 \end{figure}
 
 % Um Implementierungsfehler zu vermeiden => Transitions robuster machen
+
+\section {Unzureichende Robustheit in State-Management}
 
 Der TypeScript-Faktor macht Webapplikationen, somit auch State-Management auf Typ-Ebene robuster und weniger fehleranfällig. Allerdings ist es für die Applikation immer noch möglich in einem falschen Zustand zu sein. Gegeben sei ein eine Redux Store, der für das Speichern von einer Liste von \textit{items} zuständig ist. Definiert wird der Store wie folgt:
 
@@ -29,9 +33,14 @@ Der TypeScript-Faktor macht Webapplikationen, somit auch State-Management auf Ty
     payload: Error
   }
 
-  type Action = FetchAction | FetchSuccessfulAction | FetchFailedAction
+  type Action = FetchAction | 
+    FetchSuccessfulAction |
+    FetchFailedAction
 
-  function reducer(state = { items: 'not-fetched' }, action: Action) {
+  function reducer(
+    state = { items: 'not-fetched' }, 
+    action: Action
+  ) {
     switch (action.type) {
       case 'fetch':
         return {
@@ -56,7 +65,11 @@ Der TypeScript-Faktor macht Webapplikationen, somit auch State-Management auf Ty
   const store = createStore(reducer)
 \end{lstlisting}
 
-Es ist erlaubt, die \textit{FetchSuccessfulAction} Aktion zu versenden, ohne voher die \textit{Fetch} Aktion versendet zu haben. Das heißt \textit{items} wurden erfolgreich abrufen, ohne die Anfrage zuvor gemacht zuhaben. Seitens Redux ist das Versenden einer Aktion immer, unbeachtet des aktuellen Zustandes, erlaubt. Dieser Faktor spricht gegen die Nachvollziehbarkeit und gilt für alle populäre SM Lösungen. Es wird vorgeschlagen Übergänge wie bei einem DFA für den Store zu definieren und den Zustandswechsel wie eine Übergangsfunktion zu behandeln. Dabei werden die Zustände, im oberen Fall \textit{'not-fetched'}, \textit{'fetching'}, \textit{Error} und und \textit{Array<any>}, als Zustände des DFAs behandelt. Restliche Eigenschaften des Quintupels eines DFAs werden hierbei ignoriert.
+Es ist erlaubt, die \textit{FetchSuccessfulAction} Aktion zu versenden, ohne voher die \textit{Fetch} Aktion versendet zu haben. Das heißt \textit{items} wurden erfolgreich abrufen, ohne die Anfrage zuvor gemacht zuhaben. Seitens Redux ist das Versenden einer Aktion immer, unbeachtet des aktuellen Zustandes, erlaubt. Dieser Faktor spricht gegen die Nachvollziehbarkeit und gilt für alle populäre SM Lösungen.
+
+\section {Robustere Zustandsübergänge}
+
+Es wird vorgeschlagen Übergänge wie bei einem DFA für den Store zu definieren und den Zustandswechsel wie eine Übergangsfunktion zu behandeln. Dabei werden die Zustände, im oberen Fall \textit{'not-fetched'}, \textit{'fetching'}, \textit{Error} und und \textit{Array<any>}, als Zustände des DFAs behandelt. Restliche Eigenschaften des Quintupels eines DFAs werden hierbei ignoriert.
 
 Um die Übergangsfunktion zu definieren, wird eine Liste aller Aktionen benötigt, die bei einem bestimmten Zustand erlaubt sind. Ein Problem hierbei ist allerdings, dass die Identifizierbarkeit der einzelnen Zustände nicht garantiert ist.
 Abweichend von DFAs, sind die Zustände in Webapplikationen nicht immer serialisierbar. Nicht serialisierbare Objekte sind nicht immer identifizierbar. Im oberen Beispiel, sind die Zustände \textit{'not-fetched'} und \textit{'fetching'} vom Type String und somit serialisierbar, allerdings sind die restlichen Zustände nicht serialisierbar (Zustand vom Typ Error und Array<any>). Um dieses Problem zu umgehen, wird eine \textit{Kondition Funktion} emfohlen, um zwischen verschiedenen Zuständen zu unterscheiden. Sie akzeptiert als Paramter den aktuellen Zustand und gibt ein Boolean zurück.
