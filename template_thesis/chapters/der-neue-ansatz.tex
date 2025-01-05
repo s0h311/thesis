@@ -1,7 +1,61 @@
 \chapter{Der neue Ansatz} \label{der-neue-ansatz}
 
 % Mehr Projekte nutzen TypeScript => sind bereits was Typing angeht robust
-TypeScript wird von immer mehr Entwicklern genutzt, während die JavaScript Nutzung abnimmt. TypeScript verfügt im Gegensatz zu JavaScript über ein statisches Typisierungssystem. Diese Eigenschaft reduziert Fehler, die aufgrund von inkonsisten oder falschen Typen entstehen, erheblich.
+TypeScript verfügt, im Gegensatz zu JavaScript, über statische Typisierung. Dank der statischen Typisierung sind Operationen wie \textit{Go to Definition} und \textit{Go to Implementations} der Entwicklungsumgebungen (IDE) möglich. Diese Eigenschaften reduzieren Fehler im Zusammenhang mit falschen Typen erheblich. Wie in \ref{fig:js-und-ts-nutzung-2018-2024} abgebildet, wird TypeScript von immer mehr Entwicklern genutzt, während die JavaScript Nutzung abnimmt. \ref{fig:js-und-ts-nutzung-2018-2024} beinhaltet die tatsächliche Nutzung von TS nicht. Der TypeScript Compiler (tsc) ist in den meisten modernen IDEs, wie Visual Studio Code und den JetBrains IDEs wie IntelliJ IDEA und WebStorm integriert. Dies führt dazu, dass man auch beim JavaScript Code einige Vorteile von TypeScript bekommt.\cite{typeScriptDocumentary}
+
+Der TypeScript-Faktor macht Webapplikationen, somit auch State-Management auf Typ-Ebene robuster und weniger fehleranfällig. Allerdings ist es für die Applikation immer noch möglich in einem falschen Zustand zu sein. Gegeben sei ein eine Redux Store, der für das Speichern von einer Liste von \textit{items} zuständig ist. Definiert wird der Store wie folgt:
+
+\begin{lstlisting}
+  type FetchAction = {
+    type: 'fetch'
+  }
+
+  type FetchSuccessfulAction = {
+    type: 'fetch-successful',
+    payload: any[]
+  }
+
+  type FetchFailedAction = {
+    type: 'fetch-failed',
+    payload: Error
+  }
+
+  type Action = FetchAction | FetchSuccessfulAction | FetchFailedAction
+
+  function reducer(state = { items: 'not-fetched' }, action: Action) {
+    switch (action.type) {
+      case 'fetch':
+        return {
+          ...state,
+          items: 'fetching'
+        }
+      case 'fetch-successful':
+        return {
+          ...state,
+          items: action.payload
+        }
+      case 'fetch-failed':
+        return {
+          ...state,
+          items: action.payload
+        }
+      default:
+        return state
+    }
+  }
+  
+  const store = createStore(reducer)
+\end{lstlisting}
+
+Es ist erlaubt, die \textit{FetchSuccessfulAction} Aktion zu versenden, ohne voher die \textit{Fetch} Aktion versendet zu haben. Das heißt \textit{items} wurden erfolgreich abrufen, ohne die Anfrage zuvor gemacht zuhaben. Seitens Redux ist das Versenden einer Aktion immer, unbeachtet des aktuellen Zustandes, erlaubt. Dieser Faktor spricht gegen die Nachvollziehbarkeit. Es wird vorgeschlagen Übergänge wie bei einem DFA für den Store zu definieren und den Zustandswechsel wie eine Übergangsfunktion zu behandeln. Dabei werden die Zustände, im oberen Fall \textit{'fetching'}, \textit{Error} und und \textit{any[]}, als Zustände des DFAs zu behandelt. Restliche Eigenschaften des Quintupels eines DFAs werden hierbei ignoriert.
+
+Abweichend von DFAs, sind die Zustände in Webapplikationen nicht immer serialisierbar und eindeutig. Im oberen Beispiel, ist der Zustand 'fetching' ein String und somit serialisierbar, allerdings sind die restlichen Zustände nicht serialisierbar (Zustand vom Typ Error) und eindeutig (Zustand vom Typ any[]). Um dieses Problem zu umgehen, wird eine \textit{Kondition} Funktion emfohlen, die ein Boolean zurück gibt. Als Paramter wird der aktuelle Zustand wie folgt übergeben:
+
+\begin{lstlisting}
+type Condition<S> = (state: S) => boolean
+\end{lstlisting}
+
+
 
 % TypeScript ist auch in fast allen IDEs integriert, also wird fast von jedem genutzt.
 
