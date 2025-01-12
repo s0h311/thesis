@@ -206,7 +206,7 @@ function validateTransition(state, action, transitions) {
 }
 \end{lstlisting}
 
-Die Beiden Errors \textit{IllegalTransitionError} und \textit{TransitionNotFoundError} erben von der \textit{Error} Klasse und dienen der Unterscheidbarkeit.
+Die Beiden Laufzeitfehler \textit{IllegalTransitionError} und \textit{TransitionNotFoundError} erben von der \textit{Error} Klasse und dienen der Unterscheidbarkeit.
 
 Damit die Validerungsfunktion bei jedem Zustandswechsel ausgeführt wird, muss die Übergangsfunktion, bei redux \textit{Store.dispatch}, überschrieben werden.
 
@@ -244,7 +244,7 @@ function createTransitionStore<S>(
 }
 \end{lstlisting}
 
-Die \textit{createTransitionStore} API erstellt einen Store mit der \textit{createStore} API von redux und fügt dem Store drei neue Felder, die TransitionMap, Validierungsfunktion und die dispatchTransition Methode.
+Die \textit{createTransitionStore} API mit dem zusätzlichen TransitionsMap Parameter erstellt einen Store mit der \textit{createStore} API von redux und fügt dem Store drei neue Felder, die TransitionMap, Validierungsfunktion und die dispatchTransition Methode hinzu.
 
 \begin{lstlisting}
 type TransitionStore<S, A> = {
