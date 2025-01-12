@@ -74,6 +74,8 @@ Es ist erlaubt, die \textit{FetchSuccessfulAction} Aktion zu versenden, ohne voh
 % Action => Übergang
 % Reducer => Übergangsfunktion
 
+% TODO Verschiedene Definitionen, z.B. Validierungsfunktion, Übergangsmap, Identitätsfunktion usw. ausführlicher und verständlicher erklären. Auf die Reihenfolge achten.
+
 Es wird vorgeschlagen den Applikationszustand wie ein Zustand eines DFAs zu behandeln. Im Falle von Redux werden die Aktionen als Übergänge und der Reducer als die Übergangsfunktion eines DFAs gesehen. Restliche Eigenschaften des Quintupels eines DFAs werden hierbei ignoriert.
 
 Um die Übergangsfunktion zu definieren, wird pro Zustand eine \textit{Übergangsliste} aller Aktionen benötigt, die bei diesem Zustand erlaubt sind. Ein Problem hierbei ist allerdings, dass die Identifizierbarkeit der einzelnen Zustände nicht garantiert ist.
@@ -97,12 +99,23 @@ type TransitionMap<S extends IdentityFn<S>, A> = Map<S, Array<A>>
 
 Für die \textit{Übergangsmap} gilt: \textit{Identitätsfunktion} ist der Schlüssel, während Liste von Aktionen der Wert ist.
 
-In der Übergangsfunktion wird, der Zustandswechsel mit einer \textit{Validierungsfunktion} validiert. Diese prüft mit Hilfe der \textit{Übergangsmap} auf die Gültigkeit eines Übergangs und wirft einen Laufzeitfehler bei ungültigen Aufrufen. Falls der Übergang gültig ist, wirft sie keinen Fehler und der Zustandswechsel kann stattfinden. Der Laufzeitfehler sorgt dafür, dass der ungültige Aufruf berichtet wird und sich nicht zu einem langlebigen Bug entwicklen kann.
+In der Übergangsfunktion wird der Zustandswechsel mit einer \textit{Validierungsfunktion} validiert. Diese prüft mit Hilfe der \textit{Übergangsmap} auf die Gültigkeit des Übergangs und wirft einen Laufzeitfehler bei ungültigen Aufrufen. Falls der Übergang gültig ist, wirft sie keinen Fehler und der Zustandswechsel kann stattfinden. Gültig ist der Übergang, wenn es für den aktuellen Zustand eine Identitätsfunktion gibt, die wahr zurückgibt und die aktuelle Aktion in der zugehörigen Liste enthalten ist. In allen anderen Fällen ist der Übergang ungültig.
+Der Laufzeitfehler sorgt dafür, dass der ungültige Aufruf berichtet wird und sich nicht zu einem langlebigen Bug entwicklen kann.
+
+Die Validerungsfunktion V ist wie folgt definiert:
+
+\begin{lstlisting}
+type ValidationFn<S, A> = (
+    transitionMap: Map<S, A>,
+    state: S,
+    action A
+  ) => boolean
+\end{lstlisting}
 
 \subsection{Vorteile}
 
 \begin{enumerate}
-  \item \textbf{Übersichtlichkeit}: Damit die Validierung funktioniert, ist der Entwickler erzwungen die Übergangsmap definieren. So können fehlerhafte und überflüssige Übergänge schneller erkannt und korrigiert werden.
+  \item \textbf{Übersichtlichkeit}: Damit die Validierung funktioniert, ist der Entwickler gezwungen die Übergangsmap zu definieren. So können fehlerhafte und überflüssige Übergänge schneller erkannt und korrigiert werden.
   \item \textbf{Erkennung von Bugs}: Bei fehlgeschlagener Übergangsvalidierung wird ein Laufzeitfehler geworfen, der über die Monitoringsysteme die Entwickler über einen Bug informieren kann. Ebenfalls möglich ist es, die falschen Übergänge lediglich zu loggen. Auf diesem Wege können die Entwickler ebenfalls über den Bug in Kenntnis gesetzt werden. Die letztere Strategie erlaubt jedoch im Worst-Case Weiterausführung falscher Geschäftslogik.
 \end{enumerate}
 
@@ -110,5 +123,133 @@ In der Übergangsfunktion wird, der Zustandswechsel mit einer \textit{Validierun
 
 \begin{enumerate}
   \item \textbf{Mehr Aufwand}: Damit der Ansatz funktioniert muss die Übergangsmap definiert werden. Diese Voraussetzung kostet zusätzliche Aufwand.
-  \item \textbf{Erhöhte Ausfürungszeit}: Außerdem erhöht sich Ausführungszeit der gesamten Applikation durch die Validerung bei jedem Zustandswechsel. Diese hinzukommende Zeit ist jedoch zuvernachlässigen, wenn die Identitätsfunktion effizient ist und keine Nebeneffekten erzeugt, also eine \textit{pure function} ist.
+  \item \textbf{Erhöhte Ausfürungszeit}: Außerdem erhöht sich Ausführungszeit der gesamten Applikation durch die Validerung bei jedem Zustandswechsel. Diese hinzukommende Zeit ist jedoch zuvernachlässigen, wenn die Identitätsfunktion effizient ist und keine Nebeneffekte erzeugt, also eine \textit{pure function} ist.
 \end{enumerate}
+
+\section{Implementierung}
+
+Im folgenden wird die Implementierung der obengenannten Funktionen und Konzepte für redux gezeigt.
+
+Die TransitionMap ist die Grundlage des Ansatzes. Mit Blick auf die Developer Experience und die Lesbarkeit wird die TransitionMap als ein Array von Objekten mit zwei Feldern definiert. Nämlich \textit{identityFn} und \textit{actionTypes}:
+
+\begin{lstlisting}
+type Transition<S> = {
+  identityFn: (state: S) => boolean
+  actionTypes: string[]
+}
+  
+type Transitions<S> = Transition<S>[]
+\end{lstlisting}
+
+Im folgenden Beispiel wird die TransitionMap definiert.
+
+\begin{lstlisting}
+type State = 'not-fetched' | 'fetching' | string[] | Error
+
+type Action =
+  | {
+      type: 'fetch'
+    }
+  | {
+      type: 'fetch-successful'
+      payload: string[]
+    }
+  | {
+      type: 'fetch-failed'
+      payload: Error
+    }
+  
+const transitions = [
+  {
+    identityFn: (state) => state === 'not-fetched',
+    actionTypes: ['fetch'],
+  },
+  {
+    identityFn: (state) => state === 'fetching',
+    actionTypes: ['fetch-successful', 'fetch-failed'],
+  },
+]
+\end{lstlisting}
+
+Der Reducer kann wie von redux vorgegeben definiert werden:
+
+\begin{lstlisting}
+function reducer(state = 'not-fetched', action) {
+  switch (action.type) {
+    case 'fetch':
+      return 'fetching'
+    case 'fetch-successful':
+      return action.payload
+    case 'fetch-failed':
+      return action.payload
+    default:
+      return state
+  }
+}
+\end{lstlisting}
+
+Die definierten Übergänge werden mit Hilfe der folgenden Validierungsfunktion validiert:
+
+\begin{lstlisting}
+function validateTransition(state, action, transitions) {
+  for (const transition of transitions) {
+    if (transition.identityFn && transition.identityFn(state)) {
+      if (transition.actionTypes.includes(action.type)) {
+        return
+      }
+  
+      throw new IllegalTransitionError(state, action.type)
+    }
+  }
+  
+  throw new TransitionNotFoundError(state)
+}
+\end{lstlisting}
+
+Die Beiden Errors \textit{IllegalTransitionError} und \textit{TransitionNotFoundError} erben von der \textit{Error} Klasse und dienen der Unterscheidbarkeit.
+
+Damit die Validerungsfunktion bei jedem Zustandswechsel ausgeführt wird, muss die Übergangsfunktion, bei redux \textit{Store.dispatch}, überschrieben werden.
+
+\begin{lstlisting}
+function dispatchTransition(this, action) {
+  validateTransition(this.getState(), action, this.transitions)
+  
+  this.dispatch(action)
+}
+\end{lstlisting}
+
+Die neue \textit{dispatchTransition} Funktion wird dem \textit{Store.dispatch} Feld zugewiesen. Hierfür wird eine neue API \textit{createTransitionStore} eingeführt, die wie folgt implementiert ist.
+
+\begin{lstlisting}
+function createTransitionStore<S>(
+  transitions: Transitions<S>,
+  ...args: Parameters<typeof createStore>
+): TransitionStore<S> {
+  const store = createStore(...args)
+  
+  Object.defineProperty(store, 'transitions', {
+    value: transitions,
+  })
+  
+  Object.defineProperty(store, 'validateTransition', {
+    value: validateTransition,
+  })
+  
+  Object.defineProperty(store, 'dispatchTransition', {
+    value: dispatchTransition,
+  })
+  
+  // TODO improve typing
+   return store as TransitionStore<S>
+}
+\end{lstlisting}
+
+Die \textit{createTransitionStore} API erstellt einen Store mit der \textit{createStore} API von redux und fügt dem Store drei neue Felder, die TransitionMap, Validierungsfunktion und die dispatchTransition Methode.
+
+\begin{lstlisting}
+type TransitionStore<S, A> = {
+  validateTransition: (state: S, action: A, transitions: Transitions<S>) => void
+  transitions: Transitions<S>
+  dispatchTransition: (this: TransitionStore<S, A>, action: BasicAction) => void
+} & Store  
+\end{lstlisting}
