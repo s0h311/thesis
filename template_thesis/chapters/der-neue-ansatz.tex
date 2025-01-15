@@ -128,6 +128,8 @@ type ValidationFn<S, A> = (
 
 \section{Implementierung}
 
+\subsection{Redux}
+
 Im folgenden wird die Implementierung der obengenannten Funktionen und Konzepte für redux gezeigt.
 
 Die TransitionMap ist die Grundlage des Ansatzes. Mit Blick auf die Developer Experience und die Lesbarkeit wird die TransitionMap als ein Array von Objekten mit zwei Feldern definiert. Nämlich \textit{identityFn} und \textit{actionTypes}:
@@ -253,3 +255,7 @@ type TransitionStore<S, A> = {
   dispatchTransition: (this: TransitionStore<S, A>, action: BasicAction) => void
 } & Store  
 \end{lstlisting}
+
+\subsection{Pinia}
+
+Pinia verfügt über ein Plugin System. Über dieses bekommt man unter anderem Zugriff auf die Zustände und Actions der aktiven Stores. Die Plugins werden beim Start der Applikation über \textit{Pinia.use} API registriert.
