@@ -208,7 +208,7 @@ function validateTransition(state, action, transitions) {
 }
 \end{lstlisting}
 
-Die Beiden Laufzeitfehler \textit{IllegalTransitionError} und \textit{TransitionNotFoundError} erben von der \textit{Error} Klasse und dienen der Unterscheidbarkeit.
+Die deiden Laufzeitfehler \textit{IllegalTransitionError} und \textit{TransitionNotFoundError} erben von der \textit{Error} Klasse und dienen der Unterscheidbarkeit.
 
 Damit die Validerungsfunktion bei jedem Zustandswechsel ausgeführt wird, muss die Übergangsfunktion, bei redux \textit{Store.dispatch}, überschrieben werden.
 
@@ -220,7 +220,7 @@ function dispatchTransition(this, action) {
 }
 \end{lstlisting}
 
-Die neue \textit{dispatchTransition} Funktion wird dem \textit{Store.dispatch} Feld zugewiesen. Hierfür wird eine neue API \textit{createTransitionStore} eingeführt, die wie folgt implementiert ist.
+Es wird eine Proxy für \textit{createStore} eingeführt, die wie folgt implementiert ist:
 
 \begin{lstlisting}
 function createTransitionStore<S>(
@@ -262,11 +262,13 @@ type TransitionStore<S, A> = {
 } & Store  
 \end{lstlisting}
 
+Der TransitionStore kann per \textit{createTransitionStore} erstellt werden. Die Actions werden per \textit{TransitionStore.dispatchTransition(action)} dispatched. Mit dieser Implementierung bleiben die APIs zum Lesen und Manipulierung des Stores identisch. Lediglich nimmt der Funktion zur Erstellung eines Stores einen zusätzlichen TranisitionMap Parameter.
+
 \subsection{Pinia}
 
-Pinia verfügt über ein Plugin System. Über dieses bekommt man unter anderem Zugriff auf die Zustände und Actions der aktiven Stores. Die Plugins werden beim Start der Applikation über die \textit{Pinia.use} API registriert.
+Pinia verfügt über ein Plugin System. Über dieses bekommt man unter anderem Zugriff auf den Zustand und Actions der aktiven Stores. Die Plugins werden beim Start der Applikation über die \textit{Pinia.use} API registriert.
 
-Die Übergangsmap hat die gleiche Struktur wie die bei Redux. Allerdings wird das Feld \textit{actionTypes} zu \textit{action} umbenannt, da die Actions hierbei keine POJOs sind und für den Namen der Action in dem \textit{actions} Objekt stehen.
+Die Übergangsmap hat die gleiche Struktur wie die bei Redux. Allerdings wird das Feld \textit{actionTypes} zu \textit{action} umbenannt und steht für den Namen der Action in dem \textit{actions} Objekt. 
 
 Das Plugin wird mit der \textit{transitions} Funktion instaniziert, diese nimmt eine Map mit der ID des Stores als Schlüssel und die Übergangsmap als Wert für den jeweiligen Store:
 
@@ -283,7 +285,7 @@ type TransitionsByStoreId<S> = {
 }
 \end{lstlisting}
 
-Die transitions Funktion gibt eine Anonymefunktion zurückt, diese bekommt ein Objekt als Parameter. In diesem befindet sich unter anderem das Store Objekt. Über die \textit{Store.\$onAction} kann eine Callbackfunktion als Preproccessor für Actions registriert werden. Die Callbackfunktion bekommt ein Objekt als Parameter. In diesem sind unter anderem der Name der aktuellen Actions und der aktuelle Zustand. In dem Preproccessor wird die Validierungsfunktion aufgerufen.
+Die transitions Funktion gibt eine Anonymefunktion zurückt, diese bekommt ein Objekt als Parameter. In diesem befindet sich unter anderem das Store Objekt. Über die \textit{Store.\$onAction} Methode kann eine Callbackfunktion als Preproccessor für Actions registriert werden. Die Callbackfunktion bekommt ein Objekt als Parameter. In diesem sind unter anderem der Name der aktuellen Action und der aktuelle Zustand. In dem Preproccessor wird die Validierungsfunktion aufgerufen.
 
 \begin{lstlisting}  
 type PiniaUseCallbackArgs = Parameters<PiniaUseCallback>[0]
@@ -296,14 +298,15 @@ function transitions<S>(
   
     if (transitions) {
       store.$onAction(({ name, store }) => {
+        // name ist der Name der aktuellen Action
         validateTransition(store.$state, name, transitions)
-        })
+      })
     }
   }
 }  
 \end{lstlisting}
 
-Die Validerungsfunktion ist auf die leicht geänderte Struktur der Actions angepasst.
+Die Validerungsfunktion ist auf die leichtgeänderte Struktur der Actions angepasst:
 
 \begin{lstlisting}
 function validateTransition<S, A extends string>(
