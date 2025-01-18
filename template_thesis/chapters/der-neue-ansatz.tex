@@ -264,13 +264,16 @@ type TransitionStore<S, A> = {
 
 \subsection{Pinia}
 
-Pinia verfügt über ein Plugin System. Über dieses bekommt man unter anderem Zugriff auf die Zustände und Actions der aktiven Stores. Die Plugins werden beim Start der Applikation über \textit{Pinia.use} API registriert.
+Pinia verfügt über ein Plugin System. Über dieses bekommt man unter anderem Zugriff auf die Zustände und Actions der aktiven Stores. Die Plugins werden beim Start der Applikation über die \textit{Pinia.use} API registriert.
 
-Die Übergangsmap hat die gleiche Struktur wie die bei Redux. Allerdings wird das Feld \textit{actionTypes} zu \textit{action} umbenennt, da die Actions hierbei keine POJOs sind und stehen für den Namen der Action in dem \textit{actions} Objekt.
+Die Übergangsmap hat die gleiche Struktur wie die bei Redux. Allerdings wird das Feld \textit{actionTypes} zu \textit{action} umbenannt, da die Actions hierbei keine POJOs sind und für den Namen der Action in dem \textit{actions} Objekt stehen.
 
-Das Plugin wird mit der \textit{transitions} Funktion instaniziert, diese nimmt eine Map mit der StoreId als Schlüssel und die Übergangsmap als Wert für den jeweiligen Store:
+Das Plugin wird mit der \textit{transitions} Funktion instaniziert, diese nimmt eine Map mit der ID des Stores als Schlüssel und die Übergangsmap als Wert für den jeweiligen Store:
 
 \begin{lstlisting}
+type PiniaUseCallback =
+  Parameters<ReturnType<typeof createPinia>['use']>[0]
+
 type transitions<S> = (
   transitionsByStoreId: TransitionsByStoreId<S>
 ) => PiniaUseCallback
@@ -282,27 +285,20 @@ type TransitionsByStoreId<S> = {
 
 Die transitions Funktion gibt eine Anonymefunktion zurückt, diese bekommt ein Objekt als Parameter. In diesem befindet sich unter anderem das Store Objekt. Über die \textit{Store.\$onAction} kann eine Callbackfunktion als Preproccessor für Actions registriert werden. Die Callbackfunktion bekommt ein Objekt als Parameter. In diesem sind unter anderem der Name der aktuellen Actions und der aktuelle Zustand. In dem Preproccessor wird die Validierungsfunktion aufgerufen.
 
-\begin{lstlisting}
-type PiniaUseCallback = Parameters<
-  ReturnType<
-    typeof createPinia
-  >['use']
->[0]
+\begin{lstlisting}  
 type PiniaUseCallbackArgs = Parameters<PiniaUseCallback>[0]
-  
+
 function transitions<S>(
   transitionsByStoreId: TransitionsByStoreId<S>
 ): PiniaUseCallback {
   return ({ store }: PiniaUseCallbackArgs) => {
     const transitions = transitionsByStoreId[store.$id]
   
-    if (!transitions) {
-      return
+    if (transitions) {
+      store.$onAction(({ name, store }) => {
+        validateTransition(store.$state, name, transitions)
+        })
     }
-  
-    store.$onAction(({ name, store }) => {
-      validateTransition(store.items, name, transitions)
-    })
   }
 }  
 \end{lstlisting}
@@ -328,3 +324,18 @@ function validateTransition<S, A extends string>(
   throw new TransitionNotFoundError(state)
 }
 \end{lstlisting}
+
+Das Plugin wird im Bootstrap Schritt der Vue-Applikation registiert:
+
+\begin{lstlisting}
+const app = createApp(App)
+const pinia = createPinia()
+
+pinia.use(stateTransitions({
+  [itemStoreId]: itemStoreTransitions
+}))
+
+app.use(pinia)
+app.mount('#app')
+\end{lstlisting}
+
