@@ -4,7 +4,7 @@
 
 Der in vorangegangen Kapiteln vorgestellte Strict Transitions Ansatz erweitert die interne Funktionsweise einer State-Management Lösung. Er erfordert die zusätzliche Definition einer TranisitionMap und es werden leicht geänderte APIs dem Benutzer zur Verfügung gestellt. In diesem Kapitel werden die Standard Stores (unveränderte) zu den mit Strict Transitions verglichen. Es werden die quantifizierbare Kennzahlen Lines of Code und Performance untersucht. Außerdem werden die Aspekte Developer Experience, Fehleranfälligkeit, Wartbarkeit und Lesbarkeit analysiert. Als Basis für den Vergleich dienen die unveränderten Redux und Pinia Stores.
 
-\section{Szenarien}
+\section{Aufbau}
 
 % Vite Projekte
 % React und Vue mit TypeScript
@@ -17,11 +17,35 @@ Der in vorangegangen Kapiteln vorgestellte Strict Transitions Ansatz erweitert d
 % implement store and components
 % install pinia for vue
 % implement store and components, same as in react
+% provide a mock api data json over nginx and use it in the applications
+% foreach project trigger production builds and serve the static assets over nginx (in a  docker container)
+% for each application write identical and comprehensive playwright tests 
+% Use only Chrome Canary as testing environment
+% enable tracing for each test and repeat each 20 times 
+% feed each test report to Chrome Canary and note the summary
+% copy the source code of Strict Transitions to repository 
+% duplicate the react and vue project
+% use ST in each of them
+% run analyze for each project
+% repeat the benchmark with playwright again
+% note the summary
+% 
 %
 
-% Filterung und Suche
-
-% Data fetching
+% Apple Macbook Pro 2023
+% M3 CPU, 24GB Memory
+% MacOS Sequoia 15.3
+% Chrome Canary 134.0.6994.0
+% Playwright 1.50.0
+% React 18.3.1
+% Redux 5.0.1
+% react-redux: 9.2.0
+% Vue 3.5.13
+% Pinia 2.3.1
+% Vite 6.0.5
+% Node 20.17.0
 
 \section{Lines of Code}
+
+\section{Bundle Size}
 
