@@ -2,9 +2,70 @@
 
 % TODO Benchmarking mit Deno 2
 
-Der in vorangegangen Kapiteln vorgestellte Strict Transitions Ansatz erweitert die interne Funktionsweise einer State-Management Lösung. Er erfordert die zusätzliche Definition einer TranisitionMap und es werden leicht geänderte APIs dem Benutzer zur Verfügung gestellt. In diesem Kapitel werden die Standard Stores (unveränderte) zu den mit Strict Transitions verglichen. Es werden die quantifizierbare Kennzahlen Lines of Code und Performance untersucht. Außerdem werden die Aspekte Developer Experience, Fehleranfälligkeit, Wartbarkeit und Lesbarkeit analysiert. Als Basis für den Vergleich dienen die unveränderten Redux und Pinia Stores.
+Der in vorangegangen Kapiteln vorgestellte Strict Transitions Ansatz erweitert die interne Funktionsweise einer State-Management Lösung. Er erfordert die zusätzliche Definition einer TranisitionMap und es werden leicht geänderte APIs dem Benutzer zur Verfügung gestellt. In diesem Kapitel werden die Standard Stores (unveränderte) zu den mit Strict Transitions verglichen. Es werden die quantifizierbare Kennzahlen Lines of Code, Bundle Size und Performance untersucht. Außerdem werden die Aspekte Developer Experience, Fehleranfälligkeit, Wartbarkeit und Lesbarkeit analysiert. Als Basis für den Vergleich dienen die unveränderten Redux und Pinia Stores.
 
 \section{Aufbau}
+
+\subsection{Szenario}
+
+Als Grundlage für den Vergleich dient eine Applikation mit einer einzigen Seite, die eine Liste von 194 Produkten beinhaltet. Jedes Produkt besitzt die folgende Struktur:
+
+\begin{lstlisting}
+type Product = {
+  id: number
+  title: string
+  description: string
+  price: number
+  rating: number
+  stock: number
+  tags: string[]
+}  
+\end{lstlisting}
+
+Die Applikation fetcht und speichert die Produktdaten im Store. Außerdem können Produkte gefiltert werden. Die Filterkategorien sind: Titel, Preisobergrenze, Mindestbewertung, Verfügbarkeit (stock > 0) und Tags.
+
+\subsection{Eigenschaften der Umgebung und der Applikation}
+
+Die Applikation wurde in React mit Redux und in Vue mit Pinia gebaut. Als Build Tool wurde Vite verwendet. Damit die Ergenisse realitätsnah sind, wurden Production Builds statt Development Builds benutzt und der Applikationbundle über einen Nginx Webserver in einem Docker Container zur Verfügung gestellt. Es wurde ausschließlich Client Side Rendering benutzt.
+
+\begin{center}
+  \begin{tabular}{ | m{5cm}| m{5cm} | } 
+    \hline
+    Gerät & Apple Macbook Pro 2023 mit M3 CPU und 24GB Speicher \\ 
+    \hline
+    Betriebssystem & MacOS 15.3 \\ 
+    \hline
+    Docker & 27.4.1 \\ 
+    \hline
+    OrbStack & 1.9.5 \\ 
+    \hline
+    Nginx & 1.27.3 \\ 
+    \hline
+    Chrome Canary & 134.0.6994.0 \\ 
+    \hline
+    Playwright & 1.50.0 \\ 
+    \hline
+    Node & 20.17.0 \\ 
+    \hline
+    Vite & 6.0.5 \\ 
+    \hline
+    React & 18.3.1 \\ 
+    \hline
+    Redux & 5.0.1 \\ 
+    \hline
+    React Redux & 9.2.0 \\ 
+    \hline
+    Vue & 3.5.13 \\ 
+    \hline
+    Pinia & 2.3.1 \\ 
+    \hline
+  \end{tabular}
+\end{center}
+
+\subsection{Aufbau des Benchmarks}
+
+
+
 
 % Vite Projekte
 % React und Vue mit TypeScript
@@ -30,20 +91,6 @@ Der in vorangegangen Kapiteln vorgestellte Strict Transitions Ansatz erweitert d
 % repeat the benchmark with playwright again
 % note the summary
 % 
-%
-
-% Apple Macbook Pro 2023
-% M3 CPU, 24GB Memory
-% MacOS Sequoia 15.3
-% Chrome Canary 134.0.6994.0
-% Playwright 1.50.0
-% React 18.3.1
-% Redux 5.0.1
-% react-redux: 9.2.0
-% Vue 3.5.13
-% Pinia 2.3.1
-% Vite 6.0.5
-% Node 20.17.0
 
 \section{Lines of Code}
 
