@@ -2,31 +2,134 @@
 
 % TODO Benchmarking mit Deno 2
 
-Der in vorangegangen Kapiteln vorgestellte Strict Transitions Ansatz erweitert die interne Funktionsweise einer State-Management Lösung. Er erfordert die zusätzliche Definition einer TranisitionMap und es werden leicht geänderte APIs dem Benutzer zur Verfügung gestellt. In diesem Kapitel werden die Standard Stores (unveränderte) zu den mit Strict Transitions verglichen. Es werden die quantifizierbare Kennzahlen Lines of Code, Bundle Size und Performance untersucht. Außerdem werden die Aspekte Developer Experience, Fehleranfälligkeit, Wartbarkeit und Lesbarkeit analysiert. Als Basis für den Vergleich dienen die unveränderten Redux und Pinia Stores.
+Der in vorangegangen Kapiteln vorgestellte Strict Transitions Ansatz, erweitert die interne Funktionsweise einer State-Management Lösung. Er erfordert die zusätzliche Definition einer TranisitionMap und es werden leicht geänderte APIs dem Benutzer zur Verfügung gestellt. In diesem Kapitel werden die Standard Stores (unveränderte) zu den mit Strict Transitions verglichen. Es werden die quantifizierbare Kennzahlen Lines of Code, Bundle Size und Performance untersucht. Außerdem werden die Aspekte Developer Experience, Fehleranfälligkeit, Wartbarkeit und Lesbarkeit analysiert. Als Basis für den Vergleich dienen die unveränderten Redux und Pinia Stores.
 
 \section{Aufbau}
 
-\subsection{Szenario}
+Damit der Vergleich realitätsnah ist, wird eine Webapplikation mit üblichen Anforderungen wie Data-Fetching und Filterung gebaut. Die Applikation besteht aus einer Seite, welche eine Liste von 194 Produkten und Filteroptionen beinhaltet. Die Applikation fetcht und speichert die Produktdaten im Store. Die Filteroptionen sind: Titel, Preisobergrenze, Mindestbewertung, Verfügbarkeit und Kategorie.
 
-Als Grundlage für den Vergleich dient eine Applikation mit einer einzigen Seite, die eine Liste von 194 Produkten beinhaltet. Jedes Produkt besitzt die folgende Struktur:
+Die Applikation wurde in React mit Redux und analog in Vue mit Pinia gebaut. Anschließend wurden die beiden Implentierungen kopiert und die Kopien um Strict-Transitions erweitert. Die quantifizierbare Kennzahlen wurden mit Hilfe von eigenen Tools, sowie Playwright und Chrome Profiling gesammelt.
 
-\begin{lstlisting}
-type Product = {
-  id: number
-  title: string
-  description: string
-  price: number
-  rating: number
-  stock: number
-  tags: string[]
-}  
-\end{lstlisting}
+% Vite Projekte
+% React und Vue mit TypeScript
+% readme und .gitignore aus einzelnen Projekten gelöscht
+% Default Boilerplate, css, demo Counter gelöscht
+% prettier installiert, gleiche prettierrc für beide Projekte
+% add prettierignore to ignore yaml files, run prettier
+% add analyze script for LOC and file count
+% install redux, react-redux and reselect for react
+% implement store and components
+% install pinia for vue
+% implement store and components, same as in react
+% provide a mock api data json over nginx and use it in the applications
+% foreach project trigger production builds and serve the static assets over nginx (in a  docker container)
+% for each application write identical and comprehensive playwright tests 
+% Use only Chrome Canary as testing environment
+% enable tracing for each test and repeat each 20 times 
+% feed each test report to Chrome Canary and note the summary
+% copy the source code of Strict Transitions to repository 
+% duplicate the react and vue project
+% use ST in each of them
+% run analyze for each project
+% repeat the benchmark with playwright again
+% note the summary
+% 
 
-Die Applikation fetcht und speichert die Produktdaten im Store. Außerdem können Produkte gefiltert werden. Die Filterkategorien sind: Titel, Preisobergrenze, Mindestbewertung, Verfügbarkeit (stock > 0) und Tags.
+\section{Lines of Code}
 
-\subsection{Eigenschaften der Umgebung und der Applikation}
+Bei React wurden die .js, .ts, .tsx und bei Vue die .ts und .vue Dateien untersucht. Alle anderen Dateitypen wurden ignoriert, da diese weder für die Geschäfslogik noch für die UI verantwortlich sind.
 
-Die Applikation wurde in React mit Redux und in Vue mit Pinia gebaut. Als Build Tool wurde Vite verwendet. Damit die Ergenisse realitätsnah sind, wurden Production Builds statt Development Builds benutzt und der Applikationbundle über einen Nginx Webserver in einem Docker Container zur Verfügung gestellt. Es wurde ausschließlich Client Side Rendering benutzt.
+\begin{center}
+  \begin{tabular}{|c|c|c|c|} 
+   \hline
+   Dateityp & Anzahl & LOC & Szenario \\ [0.5ex] 
+   \hline\hline
+   js & 1 & 25 & React without ST \\ 
+   \hline
+   ts & 14 & 256 & React without ST \\
+   \hline
+   tsx & 5 & 187 & React without ST \\
+   \hline\hline
+   js & 1 & 25 & React with ST \\ 
+   \hline
+   ts & 17 & 284 & React with ST \\
+   \hline
+   tsx & 5 & 187 & React with ST \\
+   \hline\hline
+   ts & 5 & 140 & Vue without ST \\
+   \hline
+   vue & 5 & 133 & Vue without ST \\
+   \hline\hline
+   ts & 5 & 172 & Vue with ST \\
+   \hline
+   tsx & 5 & 133 & Vue with ST \\
+   \hline
+  \end{tabular}
+\end{center}
+
+Der relative Anstieg in LOC bei React beträgt $\sim6\%$ und bei Vue $\sim12\%$. Darüber hinaus beträgt der absolute Anstieg jeweils 28 Lines und 32 Lines.
+
+\section{Bundle Size}
+
+Analysiert wurden die Production Bundles der Applikationen. Diese wurden mit dem Build Tool Vite erstellt. Alle Applikationen nutzen ausschließlich Client Side Rendering. Daher ist es wichtig, dass die Bundles klein wie möglich bleiben.
+
+\begin{center}
+  \begin{tabular}{|c|c|c|} 
+   \hline
+   Size in kB & Gziped & Szenario \\ [0.5ex]
+   \hline\hline
+   156,26 & 51,22 & React without ST \\
+   \hline
+   157,24 & 51,54 & React with ST \\
+   \hline
+   70,43 & 28,23 & Vue without ST \\
+   \hline
+   71,16 & 28,5 & Vue with ST \\
+   \hline
+  \end{tabular}
+\end{center}
+
+Der relative Anstiegt bei React beträgt $\sim0,6\%$ und bei Vue $\sim1\%$. Darüber hinaus beträgt der absolute Anstieg jeweils 0,98kB und 0,73kB. Der Anstieg in Bundle Size ist vernachlässigbar.
+
+\section{Performance}
+
+Um den Unterschied in Performance zu messen, wurde das Testing Tool Playwright verwendet. Mit Hilfe von Playwright wurde ein Szenario definiert. In diesem wurden alle Features der Webseite verwendet, welche Actions in Stores verursachen. Das Szenario wurde pro Applikation 20 Mal ausgeführt. erstellt lief im Chrome Browser und wurde mit Hilfe des Performance Tabs in den Chrome DevTools analysiert. Es wurden die Mittelwerte für Ausführungszeit in Millisekunden für die Browsertasks Scripting, Painting, System, Rendering und Sonstiges ermittelt.
+
+React Redux:
+
+\begin{center}
+  \begin{tabular}{|c|c|c|c|} 
+   \hline
+   Task & ms ohne ST & mit ST & Delta \\ [0.5ex]
+   \hline\hline
+   Scripting & 1.111,45 & 1.121,35 & +0,89\% \\
+   \hline
+   Painting & 858,05 & 841,05 & -1,98\% \\
+   \hline
+   Rendering & 613,25 & 611,05 & -0,36\% \\
+   \hline
+  \end{tabular}
+\end{center}
+
+Vue Pinia:
+
+\begin{center}
+  \begin{tabular}{|c|c|c|c|} 
+   \hline
+   Task & ohne ST & mit ST & Delta \\ [0.5ex]
+   \hline\hline
+   Scripting & 1.680,15 & 1.677,95 & -0,13\% \\
+   \hline
+   Painting & 777,65 & 763,65 & -1,80\% \\
+   \hline
+   Rendering & 651,65 & 642,9 & -1,34\% \\
+   \hline
+  \end{tabular}
+\end{center}
+
+In allen Browsertasks, ausgenommen Scripting bei React, kann ein Rückgang in der Ausführungszeit beobachtet werden. Allerdings ist der Unterschied vernachlässigbar, da dieser sehr gering ist. Auch der Anstieg im Scripting bei React ist mit 0,89\% vernachlässigbar.
+
+Die Gerätspezifikation und Versionen der verwendeten Technologien wie folgt:
 
 \begin{center}
   \begin{tabular}{ | m{5cm}| m{5cm} | } 
@@ -61,38 +164,3 @@ Die Applikation wurde in React mit Redux und in Vue mit Pinia gebaut. Als Build 
     \hline
   \end{tabular}
 \end{center}
-
-\subsection{Aufbau des Benchmarks}
-
-
-
-
-% Vite Projekte
-% React und Vue mit TypeScript
-% readme und .gitignore aus einzelnen Projekten gelöscht
-% Default Boilerplate, css, demo Counter gelöscht
-% prettier installiert, gleiche prettierrc für beide Projekte
-% add prettierignore to ignore yaml files, run prettier
-% add analyze script for LOC and file count
-% install redux, react-redux and reselect for react
-% implement store and components
-% install pinia for vue
-% implement store and components, same as in react
-% provide a mock api data json over nginx and use it in the applications
-% foreach project trigger production builds and serve the static assets over nginx (in a  docker container)
-% for each application write identical and comprehensive playwright tests 
-% Use only Chrome Canary as testing environment
-% enable tracing for each test and repeat each 20 times 
-% feed each test report to Chrome Canary and note the summary
-% copy the source code of Strict Transitions to repository 
-% duplicate the react and vue project
-% use ST in each of them
-% run analyze for each project
-% repeat the benchmark with playwright again
-% note the summary
-% 
-
-\section{Lines of Code}
-
-\section{Bundle Size}
-
