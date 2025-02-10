@@ -35,7 +35,8 @@ Die Applikation wurde in React mit Redux und analog in Vue mit Pinia gebaut. Ans
 % note the summary
 % 
 
-\section{Lines of Code}
+\section{Quantifizierbare Aspekte}
+\subsection{Lines of Code}
 
 Bei React wurden die .js, .ts, .tsx und bei Vue die .ts und .vue Dateien untersucht. Alle anderen Dateitypen wurden ignoriert, da diese weder für die Geschäfslogik noch für die UI verantwortlich sind.
 
@@ -69,7 +70,7 @@ Bei React wurden die .js, .ts, .tsx und bei Vue die .ts und .vue Dateien untersu
 
 Der relative Anstieg in LOC bei React beträgt $\sim6\%$ und bei Vue $\sim12\%$. Darüber hinaus beträgt der absolute Anstieg jeweils 28 Lines und 32 Lines.
 
-\section{Bundle Size}
+\subsection{Bundle Size}
 
 Analysiert wurden die Production Bundles der Applikationen. Diese wurden mit dem Build Tool Vite erstellt. Alle Applikationen nutzen ausschließlich Client Side Rendering. Daher ist es wichtig, dass die Bundles klein wie möglich bleiben.
 
@@ -91,9 +92,9 @@ Analysiert wurden die Production Bundles der Applikationen. Diese wurden mit dem
 
 Der relative Anstiegt bei React beträgt $\sim0,6\%$ und bei Vue $\sim1\%$. Darüber hinaus beträgt der absolute Anstieg jeweils 0,98kB und 0,73kB. Der Anstieg in Bundle Size ist vernachlässigbar.
 
-\section{Performance}
+\subsection{Performance}
 
-Um den Unterschied in Performance zu messen, wurde das Testing Tool Playwright verwendet. Mit Hilfe von Playwright wurde ein Szenario definiert. In diesem wurden alle Features der Webseite verwendet, welche Actions in Stores verursachen. Das Szenario wurde pro Applikation 20 Mal ausgeführt. erstellt lief im Chrome Browser und wurde mit Hilfe des Performance Tabs in den Chrome DevTools analysiert. Es wurden die Mittelwerte für Ausführungszeit in Millisekunden für die Browsertasks Scripting, Painting, System, Rendering und Sonstiges ermittelt.
+Um den Unterschied in Performance zu messen, wurde das Testing Tool Playwright verwendet. Mit Hilfe von Playwright wurde ein Szenario definiert. In diesem wurden alle Features der Webseite verwendet, welche Actions in Stores verursachen. Das Szenario wurde pro Applikation 20 Mal ausgeführt. Es lief im Chrome Browser und wurde mit Hilfe des Performance Tabs in den Chrome DevTools analysiert. Es wurden die Mittelwerte für Ausführungszeit in Millisekunden für die Browsertasks Scripting, Painting, System, Rendering und Sonstiges ermittelt.
 
 React Redux:
 
@@ -127,9 +128,9 @@ Vue Pinia:
   \end{tabular}
 \end{center}
 
-In allen Browsertasks, ausgenommen Scripting bei React, kann ein Rückgang in der Ausführungszeit beobachtet werden. Allerdings ist der Unterschied vernachlässigbar, da dieser sehr gering ist. Auch der Anstieg im Scripting bei React ist mit 0,89\% vernachlässigbar.
+In allen Browsertasks, ausgenommen Scripting bei React, kann ein Rückgang in der Ausführungszeit beobachtet werden. Allerdings ist der Unterschied vernachlässigbar, da dieser sehr gering ist. Auch der Anstieg im Scripting bei React ist mit 0,89\% ebenfalls vernachlässigbar.
 
-Die Gerätspezifikation und Versionen der verwendeten Technologien wie folgt:
+Die Gerätspezifikation und Versionen der verwendeten Technologien ist wie folgt:
 
 \begin{center}
   \begin{tabular}{ | m{5cm}| m{5cm} | } 
@@ -164,3 +165,11 @@ Die Gerätspezifikation und Versionen der verwendeten Technologien wie folgt:
     \hline
   \end{tabular}
 \end{center}
+
+\section{Qualitative Analyse}
+
+\subsection{Developer Experience (DX)}
+\subsection{Fehleranfälligkeit}
+\subsection{Lesbarkeit}
+\subsection{Wartbarkeit}
+
