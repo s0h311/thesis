@@ -166,10 +166,18 @@ Die Gerätspezifikation und Versionen der verwendeten Technologien ist wie folgt
   \end{tabular}
 \end{center}
 
-\section{Qualitative Analyse}
+\section{Qualitative Aspekte}
 
 \subsection{Developer Experience (DX)}
+Die Developer Experience wird durch die zusätzliche Aufgabe der Definition einer TransitionMap beeinflusst. Sie führt zu mehr Code und somit zu zusätzlicher Aufwand.
+
 \subsection{Fehleranfälligkeit}
+Vorausgesetzt die Transition Map bildet die zulässigen Übergänge vollständig und korrekt ab, kann sich die Applikation nicht in einem unzulässigen Zustand befinden. Obwohl sich hiermit die Fehlerstelle verlegt, ist diese Zentral und nicht an vielen Orten verteilt. Falls sich die Applikation in einem falschen Zustand befindet, ist die Transition Map an einem zentralen Ort zu überprüfen statt die ausgelösten Actions an viele Orten.
+
+Da die Transition Map zentral definiert wird, ist sie übersichtlicher. Außerdem ist die Transition Map ein POJO und kann somit ohne weiteres Mocking getestet werden.
+
 \subsection{Lesbarkeit}
+Die Lesbarkeit des gesamten Applikationscodes bleibt unverändert, ausgenommen ist die hinzukommende Transition Map. Die Lesbarkeit der Transition Map wird hauptsächlich durch die enthaltene Identitätsfunktionen beeinflusst. Für diese wird der Einsatz von Pure Functions mit geringen Abzweigungen und Funktionsaufrufen empfohlen. Wenn dies eingehalten wird, ist die zyklomatische Komplexität gering, was in der Regel eine bessere Lesbarkeit impliziert.
+
 \subsection{Wartbarkeit}
 
