@@ -1,7 +1,5 @@
 \chapter{Vergleich der Ansätze} \label{vergleich}
 
-% TODO Benchmarking mit Deno 2
-
 Der in vorangegangen Kapiteln vorgestellte Strict Transitions Ansatz, erweitert die interne Funktionsweise einer State-Management Lösung. Er erfordert die zusätzliche Definition einer TranisitionMap und es werden leicht geänderte APIs dem Benutzer zur Verfügung gestellt. In diesem Kapitel werden die Standard Stores (unveränderte) zu den mit Strict Transitions verglichen. Es werden die quantifizierbare Kennzahlen Lines of Code, Bundle Size und Performance untersucht. Außerdem werden die Aspekte Developer Experience, Fehleranfälligkeit, Wartbarkeit und Lesbarkeit analysiert. Als Basis für den Vergleich dienen die unveränderten Redux und Pinia Stores.
 
 \section{Aufbau}
@@ -9,31 +7,6 @@ Der in vorangegangen Kapiteln vorgestellte Strict Transitions Ansatz, erweitert 
 Damit der Vergleich realitätsnah ist, wird eine Webapplikation mit üblichen Anforderungen wie Data-Fetching und Filterung gebaut. Die Applikation besteht aus einer Seite, welche eine Liste von 194 Produkten und Filteroptionen beinhaltet. Die Applikation fetcht und speichert die Produktdaten im Store. Die Filteroptionen sind: Titel, Preisobergrenze, Mindestbewertung, Verfügbarkeit und Kategorie.
 
 Die Applikation wurde in React mit Redux und analog in Vue mit Pinia gebaut. Anschließend wurden die beiden Implentierungen kopiert und die Kopien um Strict-Transitions erweitert. Die quantifizierbare Kennzahlen wurden mit Hilfe von eigenen Tools, sowie Playwright und Chrome Profiling gesammelt.
-
-% Vite Projekte
-% React und Vue mit TypeScript
-% readme und .gitignore aus einzelnen Projekten gelöscht
-% Default Boilerplate, css, demo Counter gelöscht
-% prettier installiert, gleiche prettierrc für beide Projekte
-% add prettierignore to ignore yaml files, run prettier
-% add analyze script for LOC and file count
-% install redux, react-redux and reselect for react
-% implement store and components
-% install pinia for vue
-% implement store and components, same as in react
-% provide a mock api data json over nginx and use it in the applications
-% foreach project trigger production builds and serve the static assets over nginx (in a  docker container)
-% for each application write identical and comprehensive playwright tests 
-% Use only Chrome Canary as testing environment
-% enable tracing for each test and repeat each 20 times 
-% feed each test report to Chrome Canary and note the summary
-% copy the source code of Strict Transitions to repository 
-% duplicate the react and vue project
-% use ST in each of them
-% run analyze for each project
-% repeat the benchmark with playwright again
-% note the summary
-% 
 
 \section{Quantifizierbare Aspekte}
 \subsection{Lines of Code}
@@ -94,7 +67,7 @@ Der relative Anstiegt bei React beträgt $\sim0,6\%$ und bei Vue $\sim1\%$. Dar�
 
 \subsection{Performance}
 
-Um den Unterschied in Performance zu messen, wurde das Testing Tool Playwright verwendet. Mit Hilfe von Playwright wurde ein Szenario definiert. In diesem wurden alle Features der Webseite verwendet, welche Actions in Stores verursachen. Das Szenario wurde pro Applikation 20 Mal ausgeführt. Es lief im Chrome Browser und wurde mit Hilfe des Performance Tabs in den Chrome DevTools analysiert. Es wurden die Mittelwerte für Ausführungszeit in Millisekunden für die Browsertasks Scripting, Painting, System, Rendering und Sonstiges ermittelt.
+Um den Unterschied in Performance zu messen, wurde das Testing Tool Playwright verwendet. Mit Hilfe von Playwright wurde ein Szenario definiert. In diesem wurden alle Features der Webseite verwendet, welche Actions in Stores verursachen. Das Szenario wurde pro Applikation 20 Mal ausgeführt. Es lief im Chrome Browser und wurde mit Hilfe des Performance Tabs in den Chrome DevTools analysiert. Es wurden die Mittelwerte für Ausführungszeit in Millisekunden für die Browsertasks Scripting, Painting und Rendering ermittelt.
 
 React Redux:
 
@@ -169,15 +142,15 @@ Die Gerätspezifikation und Versionen der verwendeten Technologien ist wie folgt
 \section{Qualitative Aspekte}
 
 \subsection{Developer Experience (DX)}
-Die Developer Experience wird durch die zusätzliche Aufgabe der Definition einer TransitionMap beeinflusst. Sie führt zu mehr Code und somit zu zusätzlicher Aufwand.
+Die Developer Experience wird durch die zusätzliche Aufgabe der Definition einer Transition Map beeinflusst. Sie führt zu mehr Code und somit zu zusätzlicher Aufwand.
 
 \subsection{Fehleranfälligkeit}
-Vorausgesetzt die Transition Map bildet die zulässigen Übergänge vollständig und korrekt ab, kann sich die Applikation nicht in einem unzulässigen Zustand befinden. Obwohl sich hiermit die Fehlerstelle verlegt, ist diese Zentral und nicht an vielen Orten verteilt. Falls sich die Applikation in einem falschen Zustand befindet, ist die Transition Map an einem zentralen Ort zu überprüfen statt die ausgelösten Actions an viele Orten.
+Vorausgesetzt die Transition Map bildet die zulässigen Übergänge vollständig und korrekt ab, kann sich die Applikation nicht in einem unzulässigen Zustand befinden. Obwohl sich hiermit die Fehlerstelle verlegt, ist diese Zentral und nicht an vielen Orten verteilt. Falls sich die Applikation in einem falschen Zustand befindet, ist die Transition Map an einem zentralen Ort zu überprüfen statt die ausgelösten Actions an vielen Orten.
 
-Da die Transition Map zentral definiert wird, ist sie übersichtlicher. Außerdem ist die Transition Map ein POJO und kann somit ohne weiteres Mocking getestet werden.
+Darüber hinaus bildet die Transition Map die Abläufe in der Applikation ab und kann für eine bessere Nachvollziehbarkeit sorgen. Außerdem ist die Transition Map ein POJO und kann somit ohne weiteres Mocking getestet werden.
 
 \subsection{Lesbarkeit}
-Die Lesbarkeit des gesamten Applikationscodes bleibt unverändert, ausgenommen ist die hinzukommende Transition Map. Die Lesbarkeit der Transition Map wird hauptsächlich durch die enthaltene Identitätsfunktionen beeinflusst. Für diese wird der Einsatz von Pure Functions mit geringen Abzweigungen und Funktionsaufrufen empfohlen. Wenn dies eingehalten wird, ist die zyklomatische Komplexität gering, was in der Regel eine bessere Lesbarkeit impliziert.
+Die Lesbarkeit des gesamten Applikationscodes bleibt unverändert, ausgenommen ist die hinzukommende Transition Map. Die Lesbarkeit der Transition Map wird hauptsächlich durch die enthaltene Identitätsfunktionen beeinflusst. Für diese wird der Einsatz von Pure Functions mit geringen Abzweigungen und Funktionsaufrufen empfohlen. Wenn dies eingehalten wird, ist die zyklomatische Komplexität gering, was in der Regel eine bessere Lesbarkeit impliziert. Jedoch hängt die Lesbarkeit stark von den Konventionen und dem Code Style des Authors ab.
 
 \subsection{Wartbarkeit}
-
+Jede hinzukommende Action oder State muss in der Transition Map berücksichtigt werden. Daher steigt die Wartbarkeit.
