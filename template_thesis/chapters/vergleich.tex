@@ -13,33 +13,38 @@ Die Applikation wurde in React mit Redux und analog in Vue mit Pinia gebaut. Ans
 
 Bei React wurden die .js, .ts, .tsx und bei Vue die .ts und .vue Dateien untersucht. Alle anderen Dateitypen wurden ignoriert, da diese weder für die Geschäfslogik noch für die UI verantwortlich sind.
 
-\begin{center}
-  \begin{tabular}{|c|c|c|c|} 
-   \hline
-   Dateityp & Anzahl & LOC & Szenario \\ [0.5ex] 
-   \hline\hline
-   js & 1 & 25 & React without ST \\ 
-   \hline
-   ts & 14 & 256 & React without ST \\
-   \hline
-   tsx & 5 & 187 & React without ST \\
-   \hline\hline
-   js & 1 & 25 & React with ST \\ 
-   \hline
-   ts & 17 & 284 & React with ST \\
-   \hline
-   tsx & 5 & 187 & React with ST \\
-   \hline\hline
-   ts & 5 & 140 & Vue without ST \\
-   \hline
-   vue & 5 & 133 & Vue without ST \\
-   \hline\hline
-   ts & 5 & 172 & Vue with ST \\
-   \hline
-   tsx & 5 & 133 & Vue with ST \\
-   \hline
-  \end{tabular}
-\end{center}
+\begin{table}[h!]
+  \caption{Statische Analyse bei React Redux und Vue Pinia jeweils mit und ohne \acrshort{ac:st}}
+  \label{tab:staticAnalysisSTvsNoST}
+
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|} 
+    \hline
+    Dateityp & Anzahl & LOC & Szenario \\ [0.5ex] 
+    \hline\hline
+    js & 1 & 25 & React without ST \\ 
+    \hline
+    ts & 14 & 256 & React without ST \\
+    \hline
+    tsx & 5 & 187 & React without ST \\
+    \hline\hline
+    js & 1 & 25 & React with ST \\ 
+    \hline
+    ts & 17 & 284 & React with ST \\
+    \hline
+    tsx & 5 & 187 & React with ST \\
+    \hline\hline
+    ts & 5 & 140 & Vue without ST \\
+    \hline
+    vue & 5 & 133 & Vue without ST \\
+    \hline\hline
+    ts & 5 & 172 & Vue with ST \\
+    \hline
+    tsx & 5 & 133 & Vue with ST \\
+    \hline
+    \end{tabular}
+  \end{center}
+\end{table}
 
 Der relative Anstieg in LOC bei React beträgt $\sim6\%$ und bei Vue $\sim12\%$. Darüber hinaus beträgt der absolute Anstieg jeweils 28 Lines und 32 Lines.
 
@@ -47,21 +52,26 @@ Der relative Anstieg in LOC bei React beträgt $\sim6\%$ und bei Vue $\sim12\%$.
 
 Analysiert wurden die Production Bundles der Applikationen. Diese wurden mit dem Build Tool Vite erstellt. Alle Applikationen nutzen ausschließlich Client Side Rendering. Daher ist es wichtig, dass die Bundles klein wie möglich bleiben.
 
-\begin{center}
-  \begin{tabular}{|c|c|c|} 
-   \hline
-   Size in kB & Gziped & Szenario \\ [0.5ex]
-   \hline\hline
-   156,26 & 51,22 & React without ST \\
-   \hline
-   157,24 & 51,54 & React with ST \\
-   \hline
-   70,43 & 28,23 & Vue without ST \\
-   \hline
-   71,16 & 28,5 & Vue with ST \\
-   \hline
-  \end{tabular}
-\end{center}
+\begin{table}[h!]
+  \caption{Bundle Size Analyse bei React Redux und Vue Pinia jeweils mit und ohne \acrshort{ac:st}}
+  \label{tab:bundSizeAnalysisSTvsNoST}
+
+  \begin{center}
+    \begin{tabular}{|c|c|c|} 
+    \hline
+    Size in kB & Gziped & Szenario \\ [0.5ex]
+    \hline\hline
+    156,26 & 51,22 & React without ST \\
+    \hline
+    157,24 & 51,54 & React with ST \\
+    \hline
+    70,43 & 28,23 & Vue without ST \\
+    \hline
+    71,16 & 28,5 & Vue with ST \\
+    \hline
+    \end{tabular}
+  \end{center}
+\end{table}
 
 Der relative Anstiegt bei React beträgt $\sim0,6\%$ und bei Vue $\sim1\%$. Darüber hinaus beträgt der absolute Anstieg jeweils 0,98kB und 0,73kB. Der Anstieg in Bundle Size ist vernachlässigbar.
 
@@ -71,19 +81,24 @@ Um den Unterschied in Performance zu messen, wurde das Testing Tool Playwright v
 
 React Redux:
 
-\begin{center}
-  \begin{tabular}{|c|c|c|c|} 
-   \hline
-   Task & ms ohne ST & mit ST & Delta \\ [0.5ex]
-   \hline\hline
-   Scripting & 1.111,45 & 1.121,35 & +0,89\% \\
-   \hline
-   Painting & 858,05 & 841,05 & -1,98\% \\
-   \hline
-   Rendering & 613,25 & 611,05 & -0,36\% \\
-   \hline
-  \end{tabular}
-\end{center}
+\begin{table}[h!]
+  \caption{Performance Analyse React Redux mit und ohne \acrshort{ac:st}}
+  \label{tab:performanceAnalysisReactSTvsNoST}
+
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|} 
+    \hline
+    Task & ms ohne ST & mit ST & Delta \\ [0.5ex]
+    \hline\hline
+    Scripting & 1.111,45 & 1.121,35 & +0,89\% \\
+    \hline
+    Painting & 858,05 & 841,05 & -1,98\% \\
+    \hline
+    Rendering & 613,25 & 611,05 & -0,36\% \\
+    \hline
+    \end{tabular}
+  \end{center}
+\end{table}
 
 Vue Pinia:
 
@@ -103,41 +118,7 @@ Vue Pinia:
 
 In allen Browsertasks, ausgenommen Scripting bei React, kann ein Rückgang in der Ausführungszeit beobachtet werden. Allerdings ist der Unterschied vernachlässigbar, da dieser sehr gering ist. Auch der Anstieg im Scripting bei React ist mit 0,89\% ebenfalls vernachlässigbar.
 
-Die Gerätspezifikation und Versionen der verwendeten Technologien ist wie folgt:
-
-\begin{center}
-  \begin{tabular}{ | m{5cm}| m{5cm} | } 
-    \hline
-    Gerät & Apple Macbook Pro 2023 mit M3 CPU und 24GB Speicher \\ 
-    \hline
-    Betriebssystem & MacOS 15.3 \\ 
-    \hline
-    Docker & 27.4.1 \\ 
-    \hline
-    OrbStack & 1.9.5 \\ 
-    \hline
-    Nginx & 1.27.3 \\ 
-    \hline
-    Chrome Canary & 134.0.6994.0 \\ 
-    \hline
-    Playwright & 1.50.0 \\ 
-    \hline
-    Node & 20.17.0 \\ 
-    \hline
-    Vite & 6.0.5 \\ 
-    \hline
-    React & 18.3.1 \\ 
-    \hline
-    Redux & 5.0.1 \\ 
-    \hline
-    React Redux & 9.2.0 \\ 
-    \hline
-    Vue & 3.5.13 \\ 
-    \hline
-    Pinia & 2.3.1 \\ 
-    \hline
-  \end{tabular}
-\end{center}
+Die Gerätspezifikation und Versionen der verwendeten Technologien sind aus der Tabelle \ref{tab:specsAndVersions} im Anhang zu entnehmen.
 
 \section{Qualitative Aspekte}
 
@@ -154,3 +135,5 @@ Die Lesbarkeit des gesamten Applikationscodes bleibt unverändert, ausgenommen i
 
 \subsection{Wartbarkeit}
 Jede hinzukommende Action oder State muss in der Transition Map berücksichtigt werden. Daher steigt die Wartbarkeit.
+
+% TODO Alle Vorteile der einzelnen Libraries bleiben erhalten.
