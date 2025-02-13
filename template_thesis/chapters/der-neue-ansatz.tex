@@ -66,7 +66,7 @@ Der \acrlong{ac:ts}-Faktor macht Webapplikationen, somit auch \acrlong{ac:sm} au
   const store = createStore(reducer)
 \end{lstlisting}
 
-Es ist erlaubt, die \textit{FetchSuccessfulAction} Aktion zu versenden, ohne voher die \textit{Fetch} Aktion versendet zu haben. Das heißt: \q{\textit{items} wurden erfolgreich abrufen}, ohne die Anfrage zuvor gemacht zuhaben. Seitens Redux ist das Versenden einer Aktion immer, unbeachtet des aktuellen Zustandes, erlaubt. Dieser Faktor spricht gegen die Nachvollziehbarkeit und gilt für alle populäre \acrshort{ac:sm}-Lösungen.
+Es ist erlaubt, die \textit{FetchSuccessfulAction} Aktion zu versenden, ohne voher die \textit{Fetch} Aktion versendet zu haben. Das heißt: \q{\textit{items} wurden erfolgreich abrufen}, ohne die Anfrage zuvor gemacht zuhaben. Seitens Redux ist das Versenden einer Aktion immer, unbeachtet des aktuellen Zustandes, erlaubt. Dieser Faktor spricht gegen die Nachvollziehbarkeit und gilt für alle populäre \acrshort{ac:sm} Lösungen.
 
 \section {Robustere Zustandsübergänge}
 

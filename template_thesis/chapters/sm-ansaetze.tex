@@ -1,6 +1,6 @@
 \chapter{State-Management Ansätze} \label{sm-ansaetze}
 
-Bei den populären \acrshort{ac:sm}-Lösungen folgt Redux und NgRx dem Flux-Pattern\cite{historyOfRedux}\cite{ngrxGettingStarted}, wobei Zustand und Pinia einen anderen, Framework-nahen Ansatz verfolgen. Im Folgenden wird die Funktionsweise und die Eigenschaften von Redux und Pinia näher beschrieben. Da diese grundlegend unterschiedliche Ansätze verfolgen und andere \acrshort{ac:sm}-Lösungen sich einem der beiden ähneln.
+Bei den populären \acrshort{ac:sm} Lösungen folgt Redux und NgRx dem Flux-Pattern\cite{historyOfRedux}\cite{ngrxGettingStarted}, wobei Zustand und Pinia einen anderen, Framework-nahen Ansatz verfolgen. Im Folgenden wird die Funktionsweise und die Eigenschaften von Redux und Pinia näher beschrieben. Da diese grundlegend unterschiedliche Ansätze verfolgen und andere \acrshort{ac:sm} Lösungen sich einem der beiden ähneln.
 
 \section{Redux}
 
@@ -84,7 +84,7 @@ const user = store.getState().user
 
 \section{Pinia}
 
-Pinia ist sehr eng gekoppelt mit dem Vue Framework und nutzt dessen Mechanismen der Reaktivität zu Datenhaltung. Das führt dazu, dass Pinia selbst minimal bleibt und die Daten ohne weiteres reaktiv sind. Im Gegensatz zu Redux und NgRx setzt diese Store-Lösung nicht das Flux-Pattern um. Dank dieser Praxis, ist weniger Code nötig um einen Store zu definieren. Außerdem folgt Pinia nicht den Single-Store-Ansatz, bei dem alle Daten in einem zentralen Objekt leben. Sondern sind für Teile der Daten eigenständige Store-Instanzen zuständig. Pinia bietet zwei verschiedene APIs zu Definition von Stores an. In dieser Arbeit wird die \textit{Options API} verwendet. Die Konzepte lassen sich auch auf die \textit{Composition API} übertragen.\cite{piniaDefiningAStore} Die zwei essentiellen Konzepte sind \textit{State} und \textit{Action}.
+Pinia ist sehr eng gekoppelt mit dem Vue Framework und nutzt dessen Mechanismen der Reaktivität zu Datenhaltung. Das führt dazu, dass Pinia selbst minimal bleibt und die Daten ohne weiteres reaktiv sind. Im Gegensatz zu Redux und NgRx setzt diese Store Lösung nicht das Flux-Pattern um. Dank dieser Praxis, ist weniger Code nötig um einen Store zu definieren. Außerdem folgt Pinia nicht den Single-Store-Ansatz, bei dem alle Daten in einem zentralen Objekt leben. Sondern sind für Teile der Daten eigenständige Store-Instanzen zuständig. Pinia bietet zwei verschiedene APIs zu Definition von Stores an. In dieser Arbeit wird die \textit{Options API} verwendet. Die Konzepte lassen sich auch auf die \textit{Composition API} übertragen.\cite{piniaDefiningAStore} Die zwei essentiellen Konzepte sind \textit{State} und \textit{Action}.
 
 \subsection{State}
 
