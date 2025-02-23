@@ -7,8 +7,8 @@ Der in vorangegangen Kapiteln vorgestellte \acrlong{ac:st} Ansatz, erweitert die
 
 Bei React wurden die .js, .ts, .tsx und bei Vue die .ts und .vue Dateien untersucht. Alle anderen Dateitypen wurden ignoriert, da diese weder für die Geschäfslogik noch für die UI verantwortlich sind.
 
-\begin{table}[h!]
-  \caption{Statische Analyse bei React Redux und Vue Pinia mit und ohne \acrshort{ac:st}}
+\begin{table}[!ht]
+  \caption{Statische Analyse bei Redux und Pinia mit und ohne \acrshort{ac:st}}
   \label{tab:staticAnalysisSTvsNoST}
 
   \begin{center}
@@ -16,38 +16,39 @@ Bei React wurden die .js, .ts, .tsx und bei Vue die .ts und .vue Dateien untersu
     \hline
     Dateityp & Anzahl & LOC & Szenario \\ [0.5ex] 
     \hline\hline
-    js & 1 & 25 & React without ST \\ 
+    js & 1 & 25 & React ohne ST \\ 
     \hline
-    ts & 14 & 256 & React without ST \\
+    ts & 14 & 256 & React ohne ST \\
     \hline
-    tsx & 5 & 187 & React without ST \\
+    tsx & 5 & 187 & React ohne ST \\
     \hline\hline
-    js & 1 & 25 & React with ST \\ 
+    js & 1 & 25 & React mit ST \\ 
     \hline
-    ts & 17 & 284 & React with ST \\
+    ts & 17 & 284 & React mit ST \\
     \hline
-    tsx & 5 & 187 & React with ST \\
+    tsx & 5 & 187 & React mit ST \\
     \hline\hline
-    ts & 5 & 140 & Vue without ST \\
+    ts & 5 & 140 & Vue ohne ST \\
     \hline
-    vue & 5 & 133 & Vue without ST \\
+    vue & 5 & 133 & Vue ohne ST \\
     \hline\hline
-    ts & 5 & 172 & Vue with ST \\
+    ts & 5 & 172 & Vue mit ST \\
     \hline
-    tsx & 5 & 133 & Vue with ST \\
+    tsx & 5 & 133 & Vue mit ST \\
     \hline
     \end{tabular}
   \end{center}
 \end{table}
 
-Der relative Anstieg in \acrshort{ac:loc} bei React beträgt $\sim6\%$ und bei Vue $\sim12\%$. Darüber hinaus beträgt der absolute Anstieg jeweils 28 Lines und 32 Lines.
+% TODO Formulierung verbessern
+ Wie in \ref{tab:staticAnalysisSTvsNoST} zu sehen, ist relative Anstieg in \acrshort{ac:loc} bei React beträgt $\sim6\%$ und bei Vue $\sim12\%$. Darüber hinaus beträgt der absolute Anstieg jeweils 28 Lines und 32 Lines.
 
 \subsection{Bundle Size}
 
-Analysiert wurden die Production Bundles der Applikationen. Diese wurden mit dem Build Tool Vite erstellt. Alle Applikationen nutzen ausschließlich Client Side Rendering. Daher ist es wichtig, dass die Bundles klein wie möglich bleiben.
+Analysiert wurden die Production Bundles der Applikationen. Diese wurden mit dem Build-Tool Vite erstellt. Alle Applikationen nutzen ausschließlich Client Side Rendering. Daher ist es wichtig, dass die Bundles klein wie möglich bleiben.
 
-\begin{table}[h!]
-  \caption{Bundle Size Analyse bei React Redux und Vue Pinia mit und ohne \acrshort{ac:st}}
+\begin{table}[!ht]
+  \caption{Bundle Size Analyse bei Redux und Pinia mit und ohne \acrshort{ac:st}}
   \label{tab:bundSizeAnalysisSTvsNoST}
 
   \begin{center}
@@ -55,13 +56,13 @@ Analysiert wurden die Production Bundles der Applikationen. Diese wurden mit dem
     \hline
     Size in kB & Gziped & Szenario \\ [0.5ex]
     \hline\hline
-    156,26 & 51,22 & React without ST \\
+    156,26 & 51,22 & React ohne ST \\
     \hline
-    157,24 & 51,54 & React with ST \\
+    157,24 & 51,54 & React mit ST \\
     \hline
-    70,43 & 28,23 & Vue without ST \\
+    70,43 & 28,23 & Vue ohne ST \\
     \hline
-    71,16 & 28,5 & Vue with ST \\
+    71,16 & 28,5 & Vue mit ST \\
     \hline
     \end{tabular}
   \end{center}
@@ -73,42 +74,30 @@ Der relative Anstiegt bei React beträgt $\sim0,6\%$ und bei Vue $\sim1\%$. Dar�
 
 Um den Unterschied in Performance zu messen, wurde das Testing Tool Playwright verwendet. Mit Hilfe von Playwright wurde ein Szenario definiert. In diesem wurden alle Features der Webseite verwendet, welche Actions in Stores verursachen. Das Szenario wurde pro Applikation 20 Mal ausgeführt. Es lief im Chrome Browser und wurde mit Hilfe des Performance Tabs in den Chrome DevTools analysiert. Es wurden die Mittelwerte für Ausführungszeit in Millisekunden für die Browsertasks Scripting, Painting und Rendering ermittelt.
 
-React Redux:
-
-\begin{table}[h!]
-  \caption{Performance Analyse React Redux mit und ohne \acrshort{ac:st}}
-  \label{tab:performanceAnalysisReactSTvsNoST}
+\begin{table}[!ht]
+  \caption{Performance Analyse Redux und Pinia mit und ohne \acrshort{ac:st}}
+  \label{tab:performanceAnalysisSTvsNoST}
 
   \begin{center}
-    \begin{tabular}{|c|c|c|c|} 
+    \begin{tabular}{|c|c|c|c|c|} 
     \hline
-    Task & ms ohne ST & mit ST & Delta \\ [0.5ex]
+    Task & ms ohne ST & mit ST & Delta & Library \\ [0.5ex]
     \hline\hline
-    Scripting & 1.111,45 & 1.121,35 & +0,89\% \\
+    Scripting & 1.111,45 & 1.121,35 & +0,89\% & Redux \\
     \hline
-    Painting & 858,05 & 841,05 & -1,98\% \\
+    Painting & 858,05 & 841,05 & -1,98\% & Redux \\
     \hline
-    Rendering & 613,25 & 611,05 & -0,36\% \\
+    Rendering & 613,25 & 611,05 & -0,36\% & Redux \\
+    \hline
+    Scripting & 1.680,15 & 1.677,95 & -0,13\% & Pinia \\
+    \hline
+    Painting & 777,65 & 763,65 & -1,80\% & Pinia \\
+    \hline
+    Rendering & 651,65 & 642,9 & -1,34\% & Pinia \\
     \hline
     \end{tabular}
   \end{center}
 \end{table}
-
-Vue Pinia:
-
-\begin{center}
-  \begin{tabular}{|c|c|c|c|} 
-   \hline
-   Task & ohne ST & mit ST & Delta \\ [0.5ex]
-   \hline\hline
-   Scripting & 1.680,15 & 1.677,95 & -0,13\% \\
-   \hline
-   Painting & 777,65 & 763,65 & -1,80\% \\
-   \hline
-   Rendering & 651,65 & 642,9 & -1,34\% \\
-   \hline
-  \end{tabular}
-\end{center}
 
 In allen Browsertasks, ausgenommen Scripting bei React, kann ein Rückgang in der Ausführungszeit beobachtet werden. Allerdings ist der Unterschied vernachlässigbar, da dieser sehr gering ist. Auch der Anstieg im Scripting bei React ist mit 0,89\% ebenfalls vernachlässigbar.
 
