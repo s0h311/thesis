@@ -132,7 +132,7 @@ type ValidationFn<S, A> = (
 
 Im folgenden wird die Implementierung der obengenannten Funktionen und Konzepte für redux gezeigt.
 
-Die TransitionMap ist die Grundlage des Ansatzes. Mit Blick auf die Developer Experience und die Lesbarkeit wird die TransitionMap als ein Array von Objekten mit zwei Feldern definiert. Nämlich \textit{identityFn} und \textit{actionTypes}:
+Die TransitionMap ist die Grundlage des Ansatzes. Mit Blick auf die \acrlong{ac:dx} und die Lesbarkeit wird die TransitionMap als ein Array von Objekten mit zwei Feldern definiert. Nämlich \textit{identityFn} und \textit{actionTypes}:
 
 \begin{lstlisting}
 type Transition<S> = {

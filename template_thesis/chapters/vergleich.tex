@@ -1,12 +1,6 @@
 \chapter{Vergleich der Ansätze} \label{vergleich}
 
-Der in vorangegangen Kapiteln vorgestellte \acrlong{ac:st} Ansatz, erweitert die interne Funktionsweise einer \acrlong{ac:sm} Lösung. Er erfordert die zusätzliche Definition einer TranisitionMap und es werden leicht geänderte APIs dem Benutzer zur Verfügung gestellt. In diesem Kapitel werden die Standard Stores (unveränderte) zu den mit S\acrlong{ac:st} verglichen. Es werden die quantifizierbare Kennzahlen Lines of Code, Bundle Size und Performance untersucht. Außerdem werden die Aspekte Developer Experience, Fehleranfälligkeit, Wartbarkeit und Lesbarkeit analysiert. Als Basis für den Vergleich dienen die unveränderten Redux und Pinia Stores.
-
-\section{Aufbau}
-
-Damit der Vergleich realitätsnah ist, wird eine Webapplikation mit üblichen Anforderungen wie Data-Fetching und Filterung gebaut. Die Applikation besteht aus einer Seite, welche eine Liste von 194 Produkten und Filteroptionen beinhaltet. Die Applikation fetcht und speichert die Produktdaten im Store. Die Filteroptionen sind: Titel, Preisobergrenze, Mindestbewertung, Verfügbarkeit und Kategorie.
-
-Die Applikation wurde in React mit Redux und analog in Vue mit Pinia gebaut. Anschließend wurden die beiden Implentierungen kopiert und die Kopien um Strict-Transitions erweitert. Die quantifizierbare Kennzahlen wurden mit Hilfe von eigenen Tools, sowie Playwright und Chrome Profiling gesammelt.
+Der in vorangegangen Kapiteln vorgestellte \acrlong{ac:st} Ansatz, erweitert die interne Funktionsweise einer \acrlong{ac:sm} Lösung. Er erfordert die zusätzliche Definition einer TranisitionMap und es werden leicht geänderte APIs dem Benutzer zur Verfügung gestellt. In diesem Kapitel werden die Standard Stores (unveränderte) zu den mit \acrlong{ac:st} verglichen. Es werden die quantifizierbare Kennzahlen Lines of Code, Bundle Size und Performance untersucht. Außerdem werden die Aspekte \acrlong{ac:dx}, Fehleranfälligkeit, Wartbarkeit und Lesbarkeit analysiert.
 
 \section{Quantifizierbare Aspekte}
 \subsection{Lines of Code}
@@ -46,7 +40,7 @@ Bei React wurden die .js, .ts, .tsx und bei Vue die .ts und .vue Dateien untersu
   \end{center}
 \end{table}
 
-Der relative Anstieg in LOC bei React beträgt $\sim6\%$ und bei Vue $\sim12\%$. Darüber hinaus beträgt der absolute Anstieg jeweils 28 Lines und 32 Lines.
+Der relative Anstieg in \acrshort{ac:loc} bei React beträgt $\sim6\%$ und bei Vue $\sim12\%$. Darüber hinaus beträgt der absolute Anstieg jeweils 28 Lines und 32 Lines.
 
 \subsection{Bundle Size}
 
@@ -122,8 +116,8 @@ Die Gerätspezifikation und Versionen der verwendeten Technologien sind aus der 
 
 \section{Qualitative Aspekte}
 
-\subsection{Developer Experience (DX)}
-Die Developer Experience wird durch die zusätzliche Aufgabe der Definition einer Transition Map beeinflusst. Sie führt zu mehr Code und somit zu zusätzlicher Aufwand.
+\subsection{Developer Experience}
+Die \acrshort{ac:dx} wird durch die zusätzliche Aufgabe der Definition einer Transition Map beeinflusst. Sie führt zu mehr Code und somit zu zusätzlicher Aufwand.
 
 \subsection{Fehleranfälligkeit}
 Vorausgesetzt die Transition Map bildet die zulässigen Übergänge vollständig und korrekt ab, kann sich die Applikation nicht in einem unzulässigen Zustand befinden. Obwohl sich hiermit die Fehlerstelle verlegt, ist diese Zentral und nicht an vielen Orten verteilt. Falls sich die Applikation in einem falschen Zustand befindet, ist die Transition Map an einem zentralen Ort zu überprüfen statt die ausgelösten Actions an vielen Orten.

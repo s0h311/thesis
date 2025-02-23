@@ -10,8 +10,20 @@
 %   -> Quantitative Aspekte basieren auf übliche Coding Standards, Konventionen und Konzepte
 % 6. Beantwortung der Leitfrage auf Basis des Vergleichs
 
+In dieser Arbeit kamen quantitative Methoden für Analyse von \acrshort{ac:loc}, Bundle Size und Performance zum Einsatz. Für Analyse der \acrlong{ac:dx}, Fehleranfälligkeit, Lesbarkeit und Wartbarkeit wurden hingegen qualitative Methoden verwendet. Die drei Aspekte Fehlerquote, \acrshort{ac:dx}, Lesbarkeit und Wartbarkeit mit denen sich die Forschungsfragen beschäftigen sind weitgehend mit Hilfe von qualitativen Methoden beantwortbar. Da der quantitative Aspekt der \acrshort{ac:loc} auch zur den genannten qualitativen Aspekten beiträgt, wird er in dieser Arbeit inkludiert. Die ebenfalls berücksichtigte quantitative Merkmale der Performance und Bundle Size, sind vorallem im Web von hoher Bedeutung und korrelieren mit wichtigen wirtschaftlichen Kennzahlen, wie der Conversion Rate.\cite{googleConversionRateSpeed}
 
+\section {Aufbau}
+
+Damit der Vergleich realitätsnah ist, wurde eine Webapplikation mit üblichen Anforderungen wie Data-Fetching und Filterung gebaut. Die Applikation besteht aus einer Seite, welche eine Liste von 194 Produkten und Filteroptionen beinhaltet. Die Applikation fetcht und speichert die Produktdaten im Store. Die Filteroptionen sind: Titel, Preisobergrenze, Mindestbewertung, Verfügbarkeit und Kategorie.
+
+Die Applikation wurde in React mit Redux und analog in Vue mit Pinia gebaut. Anschließend wurden die beiden Implentierungen kopiert und die Kopien um Strict-Transitions erweitert. 
+
+\subsection{Quantitative Methoden}
+Die quantitative Kennzahlen wurden mit Hilfe der Unix-Utility wc \textit{word count} für LOC, Playwright und Chrome Profiling für Performance und Vite Build-Tool für Bundle Size gesammelt. Das Ergebnis der Analysen sind die relative und absolute Veränderungen der Kennzahlen.
+
+\subsection {Qualitative Methoden}
+Die qualitative Analyse basiert auf weitverbreiteten Code Konventionen, Pattern und Empfehlungen, die zur Lesbarkeit und Wartbarkeit des Quellcodes beitragen und die Produktivität des Entwicklers oder der Entwicklering und die Fehlerquote der Applikation unmittelbar beeinflussen. Es ist wichtig zu erwähnen, dass die Schlussfolgerungen hierbei nicht vollständig von Subjektivität befreit sind.
 
 \section{Code Ausschnitte}
 
-\acrlong{ac:ts} wird benutzt um, Aufbau von Objekten oder Funktionen zu beschreiben. Längere Strukturen werden mit Hilfe von Code-Bespielen veranschaulicht. Hierfür wird ebenfalls \acrlong{ac:ts} verwendet. An viele Stellen wird auf Type-Annotationen verzichtet, damit die Beispiele leicht lesbar bleiben.
+\acrlong{ac:ts} wird benutzt, um Aufbau von Objekten oder Funktionen zu beschreiben. Längere Strukturen werden mit Hilfe von Code-Bespielen veranschaulicht. Hierfür wird ebenfalls \acrlong{ac:ts} verwendet. An viele Stellen wird auf Type-Annotationen verzichtet, damit die Beispiele leicht lesbar bleiben.
