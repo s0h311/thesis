@@ -40,8 +40,7 @@ Bei React wurden die .js, .ts, .tsx und bei Vue die .ts und .vue Dateien untersu
   \end{center}
 \end{table}
 
-% TODO Formulierung verbessern
- Wie in \ref{tab:staticAnalysisSTvsNoST} zu sehen, ist relative Anstieg in \acrshort{ac:loc} bei React beträgt $\sim6\%$ und bei Vue $\sim12\%$. Darüber hinaus beträgt der absolute Anstieg jeweils 28 Lines und 32 Lines.
+Der relative Anstieg in \acrshort{ac:loc} beträgt bei React $\sim6\%$ und bei Vue $\sim12\%$. Darüber hinaus beträgt der absolute Anstieg jeweils 28 Lines und 32 Lines. Siehe (Tab. \ref{tab:staticAnalysisSTvsNoST})
 
 \subsection{Bundle Size}
 
@@ -49,7 +48,7 @@ Analysiert wurden die Production Bundles der Applikationen. Diese wurden mit dem
 
 \begin{table}[!ht]
   \caption{Bundle Size Analyse bei Redux und Pinia mit und ohne \acrshort{ac:st}}
-  \label{tab:bundSizeAnalysisSTvsNoST}
+  \label{tab:bundleSizeAnalysisSTvsNoST}
 
   \begin{center}
     \begin{tabular}{|c|c|c|} 
@@ -68,7 +67,7 @@ Analysiert wurden die Production Bundles der Applikationen. Diese wurden mit dem
   \end{center}
 \end{table}
 
-Der relative Anstiegt bei React beträgt $\sim0,6\%$ und bei Vue $\sim1\%$. Darüber hinaus beträgt der absolute Anstieg jeweils 0,98kB und 0,73kB. Der Anstieg in Bundle Size ist vernachlässigbar.
+Der relative Anstieg beträgt bei React $\sim0,6\%$ und bei Vue $\sim1\%$. Darüber hinaus beträgt der absolute Anstieg jeweils 0,98kB und 0,73kB. Der Anstieg in Bundle Size ist vernachlässigbar. Siehe (Tab. \ref{tab:bundleSizeAnalysisSTvsNoST})
 
 \subsection{Performance}
 
@@ -99,7 +98,7 @@ Um den Unterschied in Performance zu messen, wurde das Testing Tool Playwright v
   \end{center}
 \end{table}
 
-In allen Browsertasks, ausgenommen Scripting bei React, kann ein Rückgang in der Ausführungszeit beobachtet werden. Allerdings ist der Unterschied vernachlässigbar, da dieser sehr gering ist. Auch der Anstieg im Scripting bei React ist mit 0,89\% ebenfalls vernachlässigbar.
+In allen Browsertasks, ausgenommen Scripting bei React, kann ein Rückgang in der Ausführungszeit beobachtet werden. Allerdings ist der Unterschied vernachlässigbar, da dieser sehr gering ist. Auch der Anstieg im Scripting bei React ist mit 0,89\% ebenfalls vernachlässigbar. Siehe (Tab. \ref{tab:performanceAnalysisSTvsNoST})
 
 Die Gerätspezifikation und Versionen der verwendeten Technologien sind aus der Tabelle \ref{tab:specsAndVersions} im Anhang zu entnehmen.
 
