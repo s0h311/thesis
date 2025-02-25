@@ -2,7 +2,7 @@
 
 \section{Beantwortung der Forschungsfragen}
 
-Der Hauptgegenstände des \acrlong{ac:st} Ansatzes sind die Erhöhung der Produktivität des Entwicklers oder der Entwicklerin und das Erkennen von Bugs in frühen Phasen der Entwicklung im Umgang mit dem Applikationszustand. Um diese Ziele zu erreichen, werden die Zuständsübergänge übersichtlicher an einem zentralen Ort definiert und Laufzeitfehler bei Verstößen geworfen. Die Definition der Zuständsübergänge ist inspiriert von der Übergangsfunktion eines \acrshort{ac:dfa}s. Das liegt an der intuitiven Natur der DFAs und der starken Übereinstimmung im Aufbau mit dem Zustand eines Web Frontends.
+Der Hauptgegenstände des \acrlong{ac:st} Ansatzes sind die Erhöhung der Produktivität des Entwicklers oder der Entwicklerin und das Erkennen von Bugs in frühen Phasen der Entwicklung und des Testing im Umgang mit dem Applikationszustand. Um diese Ziele zu erreichen, werden die Zuständsübergänge übersichtlicher an einem zentralen Ort definiert und Laufzeitfehler bei Verstößen geworfen. Die Definition der Zuständsübergänge ist inspiriert von der Übergangsfunktion eines \acrshort{ac:dfa}s. Das liegt an der intuitiven Natur der DFAs und der starken Übereinstimmung im Aufbau mit dem Zustand eines Web Frontends.
 
 Die drei zentralen Fragen, mit denen sich diese Arbeit beschäftigt sind:
 
@@ -14,7 +14,11 @@ Die drei zentralen Fragen, mit denen sich diese Arbeit beschäftigt sind:
 
 \subsection{Reduzierung von Fehlern}
 
+Damit Fehler im Zustand auf ein Minimum reduziert werden, ist die Definition der zulässigen Zustandsübergänge (Transition Map) erforderlich. Folgend können, keine unerlaubten, also undefinierten Zuständsübergänge stattfinden. Allerdings ist der \acrshort{ac:st} Ansatz ungeschützt vor fehlerhaften oder unvollständigen Definitionen. Eine Applikation mit einer Transition Map, die die gültigen Geschäfsprozesse und Nutzerinteraktionen nicht widerspiegelt, ist anfällig für Bugs, die im Zusammenhang mit dem State stehen. Diesem Faktor kann die leichte Testbarkeit der Transition Maps entgegenwirken. Trotz der erhöhten Übersichtlichkeit aufgrund der Aufbau der Transition Maps, sind Fehler nach wie vor möglich, auch wenn potenziell im geringeren Umfang. Aus diesem Grund kann keine definitive Antwort auf diese Frage mit Methoden dieser Arbeit geliefert werden. Eine zutreffendere Antwort sollte auf den Einsatz des \acrshort{ac:st} in realen Applikationen und umfangreiches Testen basieren.
+
 \subsection{Developer Experience}
+
+
 
 \subsection{Lesbarkeit und Wartbarkeit}
 
