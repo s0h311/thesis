@@ -1,13 +1,13 @@
 # TODOs
 
-- [] Den neuen Ansatz benennen -> Strict Transitions
+- [x] Den neuen Ansatz benennen -> Strict Transitions
 - [] Allgemeine Begriffe auf Englisch belassen
 - [] Reactivity erklären -> Leser sind Informatiker und keine Web Entwickler
 - [] Quellen aufräumen und richtig zitieren
-- [] Akronyme auflisten
-- [] Auf Abbildungen eingehen
+- [x] Akronyme auflisten
+- [x] Auf Abbildungen eingehen
 - [] Paragraphe eindrücken
 - [] Kursiv und normal Schreibung überprüfen
 - [] Grammatik und Rechtschreibung überprüfen
-- [] Code Snippets übersichtlicher machen
+- [x] Code Snippets übersichtlicher machen
 - [] Bei Code Snippets Imports hinzufügen
