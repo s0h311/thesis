@@ -18,8 +18,16 @@ Damit Fehler im Zustand auf ein Minimum reduziert werden, ist die Definition der
 
 \subsection{Developer Experience}
 
-
+Im ersten Blick kann von einer Verschlechterung der \acrshort{ac:dx} ausgegangen werden. Der Grund hierfür ist die zusätzliche Aufgabe der Definition der Transition Map. Diese zusätzliche Aufwand kann jedoch potenziell zukünftige Bugs verhindern und somit die Gesamtaufwand für Bugfixes reduzieren. Jedoch kann auch bei diesem Punkt keine definitive Schlussfolgerung mit den Methoden dieser Arbeit gezogen werden.
 
 \subsection{Lesbarkeit und Wartbarkeit}
 
+Die Lesbarkeit und Wartbarkeit der gesamten Applikation bleibt unverändert. Die Lesbarkeit und Wartbarkeit der Transition Map ist hoch, da es sich hierbei um ein einfach-testbares \acrshort{ac:pojo} handelt. Jeder dazukommende State muss in der Transition Map ergänzt werden, und genauso muss jeder entfernte State aus der Transition Map gelöscht werden.
+
 \section{Ausblick}
+
+Um die ersten beiden Forschungsfragen endgültig zu beantworten, sollte es eine weitreichendere Analyse und Umfragen stattfinden.
+
+Die \acrshort{ac:dx} kann durch Linting Rules, z.B. für ESLint gesteigert werden. So könnte beispielsweise darauf überprüft werden, dass jede definitierte Action in mindestens einer Transition Map referenziert wird. Außerdem könnte mit Hilfe eines Language Servers darauf überprüft werden, dass jeder State mindestens einer Identitätsfunktion zugeordnet werden kann. Ein visueller Editor für die Transition Map, könnte die Nachvollziehbarkei zusätzlich erhöhen und wenn es um die Geschäftsprozesse geht, als eine Diskutionshilfe zwischen den Entwicklern und Product-Managern / Product-Ownern dienen.
+
+Im Rahmen dieser Arbeit wurden drei Implementierungen für die Libraries Redux, NgRx und Pinia entwickelt. Diese Auswahl könnte um Libries wie Zustand und Redux Toolkit erweitert werden.
