@@ -74,7 +74,7 @@ Es ist erlaubt, die \textit{FetchSuccessfulAction} Aktion zu versenden, ohne voh
 % Action => Übergang
 % Reducer => Übergangsfunktion
 
-% TODO Verschiedene Definitionen, z.B. Validierungsfunktion, Übergangsmap, Identitätsfunktion usw. ausführlicher und verständlicher erklären. Auf die Reihenfolge achten.
+% TODO Verschiedene Definitionen, z.B. Validierungsfunktion, Transition Map, Identitätsfunktion usw. ausführlicher und verständlicher erklären. Auf die Reihenfolge achten.
 
 Es wird vorgeschlagen den Applikationszustand wie ein Zustand eines \acrlong{ac:dfa}s zu behandeln. Im Falle von Redux werden die Aktionen als Übergänge und der Reducer als die Übergangsfunktion eines \acrlong{ac:dfa}s gesehen. Restliche Eigenschaften des Quintupels eines \acrlong{ac:dfa}s werden hierbei ignoriert.
 
@@ -91,15 +91,15 @@ type IdentityFn<S> = (state: S) => boolean
 
 Mit dieser Funktion, kann der Anwender für die Indentifizierbarkeit der Zustände sorgen. Bei \acrlong{ac:js} Klassen, kann der \textit{instanceof} Operator genutzt werden, um auf die Instanz einer Klasse wie \textit{Error} zu prüfen.\cite{jsInstanceofOperator} Desweiteren, können bei Objekten auf eindeutige Eigenschaften, wie die Präzens eines Feldes per \textit{in} Operator geprüft werden.\cite{jsInOperator} Bei Arrays kann die \textit{Array.isArray} Funktion verwendet werden.\cite{jsIsArray} Durch die Kombinition dieser und weiteren Funktionen und Operatoren können weitere Datentypen und Fälle identifiziert werden.
 
-Die \textit{Übergangsliste} lässt sich in einer Map wie folgt speichern:
+Die Übergangsliste lässt sich in einer Map wie folgt speichern:
 
 \begin{lstlisting}
 type TransitionMap<S extends IdentityFn<S>, A> = Map<S, Array<A>>
 \end{lstlisting}
 
-Für die \textit{Übergangsmap} gilt: \textit{Identitätsfunktion} ist der Schlüssel, während Liste von Aktionen der Wert ist.
+Für die Transition Map gilt: Identitätsfunktion ist der Schlüssel, während Liste von Aktionen der Wert ist.
 
-In der Übergangsfunktion wird der Zustandswechsel mit einer \textit{Validierungsfunktion} validiert. Diese prüft mit Hilfe der \textit{Übergangsmap} auf die Gültigkeit des Übergangs und wirft einen Laufzeitfehler bei ungültigen Aufrufen. Falls der Übergang gültig ist, wirft sie keinen Fehler und der Zustandswechsel kann stattfinden. Gültig ist der Übergang, wenn es für den aktuellen Zustand eine Identitätsfunktion gibt, die wahr zurückgibt und die aktuelle Aktion in der zugehörigen Liste enthalten ist. In allen anderen Fällen ist der Übergang ungültig.
+In der Übergangsfunktion wird der Zustandswechsel mit einer \textit{Validierungsfunktion} validiert. Diese prüft mit Hilfe der Transition Map auf die Gültigkeit des Übergangs und wirft einen Laufzeitfehler bei ungültigen Aufrufen. Falls der Übergang gültig ist, wirft sie keinen Fehler und der Zustandswechsel kann stattfinden. Gültig ist der Übergang, wenn es für den aktuellen Zustand eine Identitätsfunktion gibt, die wahr zurückgibt und die aktuelle Aktion in der zugehörigen Liste enthalten ist. In allen anderen Fällen ist der Übergang ungültig.
 Der Laufzeitfehler sorgt dafür, dass der ungültige Aufruf berichtet wird und sich nicht zu einem langlebigen Bug entwicklen kann.
 
 Die Validerungsfunktion V ist wie folgt definiert:
@@ -115,15 +115,15 @@ type ValidationFn<S, A> = (
 \subsection{Vorteile}
 
 \begin{enumerate}
-  \item \textbf{Übersichtlichkeit}: Damit die Validierung funktioniert, ist der Entwickler gezwungen die Übergangsmap zu definieren. So können fehlerhafte und überflüssige Übergänge schneller erkannt und korrigiert werden.
+  \item \textbf{Übersichtlichkeit}: Damit die Validierung funktioniert, ist der Entwickler gezwungen die Transition Map zu definieren. So können fehlerhafte und überflüssige Übergänge schneller erkannt und korrigiert werden.
   \item \textbf{Erkennung von Bugs}: Bei fehlgeschlagener Übergangsvalidierung wird ein Laufzeitfehler geworfen, der über die Monitoringsysteme die Entwickler über einen Bug informieren kann. Ebenfalls möglich ist es, die falschen Übergänge lediglich zu loggen. Auf diesem Wege können die Entwickler ebenfalls über den Bug in Kenntnis gesetzt werden. Die letztere Strategie erlaubt jedoch im Worst-Case Weiterausführung falscher Geschäftslogik.
 \end{enumerate}
 
 \subsection{Nachteile}
 
 \begin{enumerate}
-  \item \textbf{Mehr Aufwand}: Damit der Ansatz funktioniert muss die Übergangsmap definiert werden. Diese Voraussetzung kostet zusätzliche Aufwand.
-  \item \textbf{Erhöhte Ausfürungszeit}: Außerdem erhöht sich Ausführungszeit der gesamten Applikation durch die Validerung bei jedem Zustandswechsel. Diese hinzukommende Zeit ist jedoch zuvernachlässigen, wenn die Identitätsfunktion effizient ist und keine Nebeneffekte erzeugt, also eine \textit{pure function} ist.
+  \item \textbf{Mehr Aufwand}: Damit der Ansatz funktioniert muss die Transition Map definiert werden. Diese Voraussetzung kostet zusätzliche Aufwand.
+  \item \textbf{Erhöhte Ausfürungszeit}: Außerdem erhöht sich Ausführungszeit der gesamten Applikation durch die Validerung bei jedem Zustandswechsel. Diese hinzukommende Zeit ist jedoch zuvernachlässigen, wenn die Identitätsfunktion effizient ist und keine Nebeneffekte erzeugt, also eine pure function ist.
 \end{enumerate}
 
 \section{Implementierung}
@@ -208,7 +208,7 @@ function validateTransition(state, action, transitions) {
 }
 \end{lstlisting}
 
-Die deiden Laufzeitfehler \textit{IllegalTransitionError} und \textit{TransitionNotFoundError} erben von der \textit{Error} Klasse und dienen der Unterscheidbarkeit.
+Die deiden Laufzeitfehler IllegalTransitionError und TransitionNotFoundError erben von der Error Klasse und dienen der Unterscheidbarkeit.
 
 Damit die Validerungsfunktion bei jedem Zustandswechsel ausgeführt wird, muss die Übergangsfunktion, bei redux \textit{Store.dispatch}, überschrieben werden.
 
@@ -268,9 +268,9 @@ Der TransitionStore kann per \textit{createTransitionStore} erstellt werden. Die
 
 Pinia verfügt über ein Plugin System. Über dieses bekommt man unter anderem Zugriff auf den Zustand und Actions der aktiven Stores. Die Plugins werden beim Start der Applikation über die \textit{Pinia.use} API registriert.
 
-Die Übergangsmap hat die gleiche Struktur wie die bei Redux. Allerdings wird das Feld \textit{actionTypes} zu \textit{action} umbenannt und steht für den Namen der Action in dem \textit{actions} Objekt. 
+Die Transition Map hat die gleiche Struktur wie die bei Redux. Allerdings wird das Feld \textit{actionTypes} zu \textit{action} umbenannt und steht für den Namen der Action in dem \textit{actions} Objekt. 
 
-Das Plugin wird mit der \textit{transitions} Funktion instaniziert, diese nimmt eine Map mit der ID des Stores als Schlüssel und die Übergangsmap als Wert für den jeweiligen Store:
+Das Plugin wird mit der \textit{transitions} Funktion instaniziert, diese nimmt eine Map mit der ID des Stores als Schlüssel und die Transition Map als Wert für den jeweiligen Store:
 
 \begin{lstlisting}
 type PiniaUseCallback =
