@@ -7,6 +7,6 @@
 - [x] Akronyme auflisten
 - [x] Auf Abbildungen eingehen
 - [x] Kursiv und normal Schreibung überprüfen
-- [] Grammatik und Rechtschreibung überprüfen
+- [x] Grammatik und Rechtschreibung überprüfen
 - [x] Code Snippets übersichtlicher machen
 - [] Bei Code Snippets Imports hinzufügen
