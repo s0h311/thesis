@@ -73,7 +73,7 @@ Der \acrlong{ac:ts}-Faktor macht Webapplikationen, somit auch \acrlong{ac:sm}, a
   const store = createStore(reducer)
 \end{lstlisting}
 
-Es ist erlaubt, die \textit{FetchSuccessfulAction} Action zu versenden, ohne vorher die \textit{Fetch} Action versendet zu haben. Das heißt: \q{\textit{items} wurden erfolgreich abgerufen}, ohne die Anfrage zuvor gemacht zu haben. Seitens Redux ist das Versenden einer Aktion immer, unbeachtet des aktuellen Zustandes, erlaubt. Dieser Faktor spricht gegen die Nachvollziehbarkeit und gilt für alle populären \acrshort{ac:sm}-Lösungen.
+Es ist erlaubt, die \textit{FetchSuccessfulAction} Action zu versenden, ohne vorher die \textit{Fetch} Action versendet zu haben. Das heißt: \q{\textit{items} wurden erfolgreich abgerufen}, ohne die Anfrage zuvor gemacht zu haben. Seitens Redux ist das Versenden einer Action immer, unbeachtet des aktuellen Zustandes, erlaubt. Dieser Faktor spricht gegen die Nachvollziehbarkeit und gilt für alle populären \acrshort{ac:sm}-Lösungen.
 
 \section{Korrektere Zustandsübergänge}
 
@@ -83,9 +83,9 @@ Es ist erlaubt, die \textit{FetchSuccessfulAction} Action zu versenden, ohne vor
 
 % TODO Verschiedene Definitionen, z.B. Validierungsfunktion, Transition Map, Identitätsfunktion usw. ausführlicher und verständlicher erklären. Auf die Reihenfolge achten.
 
-Es wird vorgeschlagen, den Applikationszustand wie einen Zustand eines \acrlong{ac:dfa}s zu behandeln. Im Falle von Redux werden die Aktionen als Übergänge und der Reducer als die Übergangsfunktion eines \acrlong{ac:dfa}s gesehen. Restliche Eigenschaften des Quintupels eines \acrlong{ac:dfa}s werden hierbei ignoriert.
+Es wird vorgeschlagen, den Applikationszustand wie einen Zustand eines \acrlong{ac:dfa}s zu behandeln. Im Falle von Redux werden die Actions als Übergänge und der Reducer als die Übergangsfunktion eines \acrlong{ac:dfa}s gesehen. Restliche Eigenschaften des Quintupels eines \acrlong{ac:dfa}s werden hierbei ignoriert.
 
-Um die Übergangsfunktion zu definieren, wird pro Zustand eine \textit{Übergangsliste} aller Aktionen benötigt, die bei diesem Zustand erlaubt sind. Ein Problem hierbei ist allerdings, dass die Identifizierbarkeit der einzelnen Zustände nicht garantiert ist. Abweichend von \acrlong{ac:dfa}s sind die Zustände in Webapplikationen nicht immer serialisierbar. Nicht serialisierbare Objekte sind nicht immer identifizierbar. Im oberen Beispiel sind die Zustände \textit{'not-fetched'} und \textit{'fetching'} vom Typ String und somit serialisierbar, allerdings sind die restlichen Zustände nicht serialisierbar (Zustand vom Typ Error und Array<any>). Um dieses Problem zu umgehen, wird eine \textit{Identitätsfunktion} empfohlen, um zwischen verschiedenen Zuständen zu unterscheiden. Sie akzeptiert als Parameter den aktuellen Zustand und gibt ein Boolean zurück.
+Um die Übergangsfunktion zu definieren, wird pro Zustand eine \textit{Übergangsliste} aller Actions benötigt, die bei diesem Zustand erlaubt sind. Ein Problem hierbei ist allerdings, dass die Identifizierbarkeit der einzelnen Zustände nicht garantiert ist. Abweichend von \acrlong{ac:dfa}s sind die Zustände in Webapplikationen nicht immer serialisierbar. Nicht serialisierbare Objekte sind nicht immer identifizierbar. Im oberen Beispiel sind die Zustände \textit{'not-fetched'} und \textit{'fetching'} vom Typ String und somit serialisierbar, allerdings sind die restlichen Zustände nicht serialisierbar (Zustand vom Typ Error und Array<any>). Um dieses Problem zu umgehen, wird eine \textit{Identitätsfunktion} empfohlen, um zwischen verschiedenen Zuständen zu unterscheiden. Sie akzeptiert als Parameter den aktuellen Zustand und gibt ein Boolean zurück.
 
 \begin{lstlisting}
 type IdentityFn<S> = (state: S) => boolean
@@ -103,9 +103,9 @@ Die Übergangsliste lässt sich in einer Map wie folgt speichern:
 type TransitionMap<S extends IdentityFn<S>, A> = Map<S, Array<A>>
 \end{lstlisting}
 
-Für die Transition Map gilt: Identitätsfunktion ist der Schlüssel, während die Liste von Aktionen der Wert ist.
+Für die Transition Map gilt: Identitätsfunktion ist der Schlüssel, während die Liste von Actions der Wert ist.
 
-In der Übergangsfunktion wird der Zustandswechsel mit einer \textit{Validierungsfunktion} validiert. Diese prüft mit Hilfe der Transition Map auf die Gültigkeit des Übergangs und wirft einen Laufzeitfehler bei ungültigen Aufrufen. Falls der Übergang gültig ist, wirft sie keinen Fehler und der Zustandswechsel kann stattfinden. Gültig ist der Übergang, wenn es für den aktuellen Zustand eine Identitätsfunktion gibt, die wahr zurückgibt und die aktuelle Aktion in der zugehörigen Liste enthalten ist. In allen anderen Fällen ist der Übergang ungültig. Der Laufzeitfehler sorgt dafür, dass der ungültige Aufruf berichtet wird und sich nicht zu einem langlebigen Bug entwickeln kann.
+In der Übergangsfunktion wird der Zustandswechsel mit einer \textit{Validierungsfunktion} validiert. Diese prüft mit Hilfe der Transition Map auf die Gültigkeit des Übergangs und wirft einen Laufzeitfehler bei ungültigen Aufrufen. Falls der Übergang gültig ist, wirft sie keinen Fehler und der Zustandswechsel kann stattfinden. Gültig ist der Übergang, wenn es für den aktuellen Zustand eine Identitätsfunktion gibt, die wahr zurückgibt und die aktuelle Action in der zugehörigen Liste enthalten ist. In allen anderen Fällen ist der Übergang ungültig. Der Laufzeitfehler sorgt dafür, dass der ungültige Aufruf berichtet wird und sich nicht zu einem langlebigen Bug entwickeln kann.
 
 Die Validerungsfunktion V ist wie folgt definiert:
 
