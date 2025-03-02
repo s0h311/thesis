@@ -10,3 +10,4 @@
 - [x] Grammatik und Rechtschreibung überprüfen
 - [x] Code Snippets übersichtlicher machen
 - [] Bei Code Snippets Imports hinzufügen
+- [] Einreichungsdatum ändern
