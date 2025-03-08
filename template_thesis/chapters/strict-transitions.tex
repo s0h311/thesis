@@ -76,13 +76,6 @@ Der \acrlong{ac:ts}-Faktor macht Webapplikationen, somit auch \acrlong{ac:sm}, a
 Es ist erlaubt, die \textit{FetchSuccessfulAction} Action zu versenden, ohne vorher die \textit{Fetch} Action versendet zu haben. Das heißt: \q{\textit{items} wurden erfolgreich abgerufen}, ohne die Anfrage zuvor gemacht zu haben. Seitens Redux ist das Versenden einer Action immer, unbeachtet des aktuellen Zustandes, erlaubt. Dieser Faktor spricht gegen die Nachvollziehbarkeit und gilt für alle populären \acrshort{ac:sm}-Lösungen.
 
 \section{Korrektere Zustandsübergänge}
-
-% State => Zustand
-% Action => Übergang
-% Reducer => Übergangsfunktion
-
-% TODO Verschiedene Definitionen, z.B. Validierungsfunktion, Transition Map, Identitätsfunktion usw. ausführlicher und verständlicher erklären. Auf die Reihenfolge achten.
-
 Es wird vorgeschlagen, den Applikationszustand wie einen Zustand eines \acrlong{ac:dfa}s zu behandeln. Im Falle von Redux werden die Actions als Übergänge und der Reducer als die Übergangsfunktion eines \acrlong{ac:dfa}s gesehen. Restliche Eigenschaften des Quintupels eines \acrlong{ac:dfa}s werden hierbei ignoriert.
 
 Um die Übergangsfunktion zu definieren, wird pro Zustand eine \textit{Übergangsliste} aller Actions benötigt, die bei diesem Zustand erlaubt sind. Ein Problem hierbei ist allerdings, dass die Identifizierbarkeit der einzelnen Zustände nicht garantiert ist. Abweichend von \acrlong{ac:dfa}s sind die Zustände in Webapplikationen nicht immer serialisierbar. Nicht serialisierbare Objekte sind nicht immer identifizierbar. Im oberen Beispiel sind die Zustände \textit{'not-fetched'} und \textit{'fetching'} vom Typ String und somit serialisierbar, allerdings sind die restlichen Zustände nicht serialisierbar (Zustand vom Typ Error und Array<any>). Um dieses Problem zu umgehen, wird eine \textit{Identitätsfunktion} empfohlen, um zwischen verschiedenen Zuständen zu unterscheiden. Sie akzeptiert als Parameter den aktuellen Zustand und gibt ein Boolean zurück.
@@ -128,7 +121,7 @@ type ValidationFn<S, A> = (
 
 \begin{enumerate}
   \item \textbf{Mehr Aufwand}: Damit der Ansatz funktioniert, muss die Transition Map definiert werden. Diese Voraussetzung kostet zusätzlichen Aufwand.
-  \item \textbf{Erhöhte Ausführungszeit}: Außerdem erhöht sich die Ausführungszeit der gesamten Applikation durch die Validierung bei jedem Zustandswechsel. Diese hinzukommende Zeit ist jedoch zu vernachlässigen, wenn die Identitätsfunktion effizient ist und keine Nebeneffekte erzeugt, also eine pure function ist.
+  \item \textbf{Erhöhte Ausführungszeit}: Außerdem erhöht sich die Ausführungszeit der gesamten Applikation durch die Validierung bei jedem Zustandswechsel. Diese hinzukommende Zeit ist jedoch zu vernachlässigen, wenn die Identitätsfunktion effizient ist und keine Nebeneffekte erzeugt, also eine Pure-Function ist.
 \end{enumerate}
 
 \section{Implementierung}

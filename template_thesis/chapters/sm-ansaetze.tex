@@ -31,7 +31,7 @@ Das Feld \textit{type} beschreibt die Action, und das optionale Feld \textit{pay
 
 \subsection{Reducer}
 
-Ein Reducer ist für die Initialisierung und Aktualisierung des Zustandes zuständig. Ein Reducer wird als eine Pure-Function mit zwei Parametern definiert.
+Der Reducer ist für die Initialisierung und Aktualisierung des Zustandes zuständig. Er wird als eine Pure-Function mit zwei Parametern definiert.
 Der erste Parameter ist das Zustandsobjekt und der zweite die versendete Action. Der Rückgabewert dieser Funktion ist das neue Zustandsobjekt. Da es sich hier um eine Pure-Function handelt, dürfen keine Seiteneffekte stattfinden. Wie eingangs erwähnt, ist der Zustand unveränderlich, daher dürfen hier keine direkten Veränderungen des Zustandes stattfinden. Es wird lediglich ein neues Objekt zurückgegeben. Falls keine Veränderungen stattfinden sollen, kann das ursprüngliche Objekt aus dem ersten Parameter unverändert zurückgegeben werden.\cite{reduxStateActionReducers}
 
 Es wird folgende Struktur für Reducer empfohlen:
@@ -62,24 +62,24 @@ function reducer(state = { user: null }, action) {
 }
 \end{lstlisting}
 
-Es wird die \textit{Spread-Syntax: ...} aus ECMAScript 6 genutzt, um das ursprüngliche Zustandsobjekt zu klonen.\cite{mdnSpreadSyntax}
+Es wird die \textit{Spread-Syntax: ...} aus ECMAScript 6 genutzt, um das ursprüngliche Zustandsobjekt zu kopieren (shallow copy).\cite{mdnSpreadSyntax}
 
 \subsection{Definition und Interaktion mit dem Store}
 
 Der Store wird mit Hilfe der \textit{createStore}-API erstellt. Als Parameter wird die Reducer-Function übergeben. Der Rückgabewert ist das Store-Objekt. Dieses bietet Zugang zu unter anderem \textit{dispatch} und \textit{getState}-Methoden. Mit diesen kann jeweils eine Action versendet und aus dem Store gelesen werden.
 
 \begin{lstlisting}
-import { createStore } from 'redux'
-
 const store = createStore(reducer)
 store.dispatch(action)
 const user = store.getState().user
 \end{lstlisting}
 
+Die erwähnten Redux-APIs sind die Grundlage für den Datenfluss in Redux, wie in Abb. \ref{fig:redux-dataflow} dargestellt.
+
 \begin{figure}[H]
-  \includegraphics[width=1\textwidth]{redux-lifecycle.png}
+  \includegraphics[width=1\textwidth]{redux-dataflow.png}
   \caption{How to use Redux architecture — Part 1 [\citeyear{reduxDataFlow}]}
-  \label{fig:redux-lifecycle}
+  \label{fig:redux-dataflow}
 \end{figure}
 
 \section{Pinia}
