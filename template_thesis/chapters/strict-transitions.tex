@@ -4,7 +4,7 @@
 
 % Mehr Projekte nutzen TypeScript => sind bereits was Typing angeht robust
 % TypeScript ist auch in fast allen IDEs integriert, also wird fast von jedem genutzt.
-\acrlong{ac:ts} verfügt, im Gegensatz zu \acrlong{ac:js}, über statische Typisierung. Dank der statischen Typisierung sind statische Typeanalysen und Operationen wie \textit{Go to Definition} und \textit{Go to Implementations} der Entwicklungsumgebungen (IDE) möglich. Diese Eigenschaften reduzieren Fehler im Zusammenhang mit falschen Typen erheblich. Wie in \ref{fig:js-und-ts-nutzung-2018-2024} abgebildet, wird \acrlong{ac:ts} von immer mehr Entwicklern genutzt, während die \acrlong{ac:js}-Nutzung abnimmt. \ref{fig:js-und-ts-nutzung-2018-2024} beinhaltet die tatsächliche Nutzung von \acrshort{ac:ts} nicht. Der \acrlong{ac:tsc} ist in den meisten modernen \acrshort{ac:ide}s, wie Visual Studio Code und den JetBrains \acrshort{ac:ide}s wie IntelliJ IDEA und WebStorm integriert. Dies führt dazu, dass man auch beim \acrlong{ac:js}-Code einige Vorteile von \acrlong{ac:ts} bekommt.\cite{typeScriptDocumentary}
+\acrlong{ac:ts} verfügt, im Gegensatz zu \acrlong{ac:js}, über statische Typisierung. Dank der statischen Typisierung sind statische Typeanalysen und Operationen wie \textit{Go to Definition} und \textit{Go to Implementations} der \acrshort{ac:ide}s möglich. Diese Eigenschaften reduzieren Fehler im Zusammenhang mit falschen Typen erheblich. Wie in \ref{fig:js-und-ts-nutzung-2018-2024} abgebildet, wird \acrlong{ac:ts} von immer mehr Entwicklern genutzt, während die \acrlong{ac:js}-Nutzung abnimmt. \ref{fig:js-und-ts-nutzung-2018-2024} beinhaltet die tatsächliche Nutzung von \acrshort{ac:ts} nicht. Der \acrlong{ac:tsc} ist in den meisten modernen \acrshort{ac:ide}s, wie Visual Studio Code und den JetBrains \acrshort{ac:ide}s wie IntelliJ IDEA und WebStorm integriert. Dies führt dazu, dass man auch beim \acrlong{ac:js}-Code einige Vorteile von \acrlong{ac:ts} bekommt.\cite{typeScriptDocumentary}
 
 \begin{figure}[H]
   \includegraphics[width=0.85\textwidth]{js-und-ts-nutzung-2018-2024.png}
@@ -76,9 +76,9 @@ Der \acrlong{ac:ts}-Faktor macht Webapplikationen, somit auch \acrlong{ac:sm}, a
 Es ist erlaubt, die \textit{FetchSuccessfulAction} Action zu versenden, ohne vorher die \textit{Fetch} Action versendet zu haben. Das heißt: \q{\textit{items} wurden erfolgreich abgerufen}, ohne die Anfrage zuvor gemacht zu haben. Seitens Redux ist das Versenden einer Action immer, unbeachtet des aktuellen Zustandes, erlaubt. Dieser Faktor spricht gegen die Nachvollziehbarkeit und gilt für alle populären \acrshort{ac:sm}-Lösungen.
 
 \section{Korrektere Zustandsübergänge}
-Es wird vorgeschlagen, den Applikationszustand wie einen Zustand eines \acrlong{ac:dfa}s zu behandeln. Im Falle von Redux werden die Actions als Übergänge und der Reducer als die Übergangsfunktion eines \acrlong{ac:dfa}s gesehen. Restliche Eigenschaften des Quintupels eines \acrlong{ac:dfa}s werden hierbei ignoriert.
+Es wird vorgeschlagen, den Applikationszustand wie einen Zustand eines \acrshort{ac:dfa}s zu behandeln. Im Falle von Redux werden die Actions als Übergänge und der Reducer als die Übergangsfunktion eines \acrshort{ac:dfa}s gesehen. Restliche Eigenschaften des Quintupels eines \acrshort{ac:dfa}s werden hierbei ignoriert.
 
-Um die Übergangsfunktion zu definieren, wird pro Zustand eine \textit{Übergangsliste} aller Actions benötigt, die bei diesem Zustand erlaubt sind. Ein Problem hierbei ist allerdings, dass die Identifizierbarkeit der einzelnen Zustände nicht garantiert ist. Abweichend von \acrlong{ac:dfa}s sind die Zustände in Webapplikationen nicht immer serialisierbar. Nicht serialisierbare Objekte sind nicht immer identifizierbar. Im oberen Beispiel sind die Zustände \textit{'not-fetched'} und \textit{'fetching'} vom Typ String und somit serialisierbar, allerdings sind die restlichen Zustände nicht serialisierbar (Zustand vom Typ Error und Array<any>). Um dieses Problem zu umgehen, wird eine \textit{Identitätsfunktion} empfohlen, um zwischen verschiedenen Zuständen zu unterscheiden. Sie akzeptiert als Parameter den aktuellen Zustand und gibt ein Boolean zurück.
+Um die Übergangsfunktion zu definieren, wird pro Zustand eine Liste aller Actions (\textit{Übergangsliste}) benötigt, die bei diesem Zustand erlaubt sind. Ein Problem hierbei ist allerdings, dass die Identifizierbarkeit der einzelnen Zustände nicht garantiert ist. Abweichend von \acrshort{ac:dfa}s sind die Zustände in Webapplikationen nicht immer serialisierbar. Nicht serialisierbare Objekte sind nicht immer identifizierbar. Im oberen Beispiel sind die Zustände \textit{'not-fetched'} und \textit{'fetching'} vom Typ String und somit serialisierbar, allerdings sind die restlichen Zustände nicht serialisierbar (Zustand vom Typ Error und Array<any>). Um dieses Problem zu umgehen, wird eine \textit{Identitätsfunktion} empfohlen, um zwischen verschiedenen Zuständen zu unterscheiden. Sie akzeptiert als Parameter den aktuellen Zustand und gibt ein Boolean zurück.
 
 \begin{lstlisting}
 type IdentityFn<S> = (state: S) => boolean
@@ -100,11 +100,13 @@ Für die Transition Map gilt: Identitätsfunktion ist der Schlüssel, während d
 
 In der Übergangsfunktion wird der Zustandswechsel mit einer \textit{Validierungsfunktion} validiert. Diese prüft mit Hilfe der Transition Map auf die Gültigkeit des Übergangs und wirft einen Laufzeitfehler bei ungültigen Aufrufen. Falls der Übergang gültig ist, wirft sie keinen Fehler und der Zustandswechsel kann stattfinden. Gültig ist der Übergang, wenn es für den aktuellen Zustand eine Identitätsfunktion gibt, die wahr zurückgibt und die aktuelle Action in der zugehörigen Liste enthalten ist. In allen anderen Fällen ist der Übergang ungültig. Der Laufzeitfehler sorgt dafür, dass der ungültige Aufruf berichtet wird und sich nicht zu einem langlebigen Bug entwickeln kann.
 
-Die Validerungsfunktion V ist wie folgt definiert:
+% TODO stimmt nicht: "In der Übergangsfunktion wird der Zustandswechsel mit einer \textit{Validierungsfunktion} validiert."
+
+Die Validerungsfunktion ist wie folgt definiert:
 
 \begin{lstlisting}
 type ValidationFn<S, A> = (
-    transitionMap: Map<S, A>,
+    transitionMap: TransitionMap<S, A>,
     state: S,
     action: A
   ) => boolean
@@ -141,7 +143,7 @@ type Transition<S> = {
 type Transitions<S> = Transition<S>[]
 \end{lstlisting}
 
-Im Folgenden wird die Transition Map definiert.
+Beispiel für eine Transition Map:
 
 \begin{lstlisting}
 type State = 'not-fetched' | 'fetching' | string[] | Error
@@ -193,7 +195,7 @@ Die definierten Übergänge werden mit Hilfe der folgenden Validierungsfunktion 
 \begin{lstlisting}
 function validateTransition(state, action, transitions) {
   for (const transition of transitions) {
-    if (transition.identityFn && transition.identityFn(state)) {
+    if (transition.identityFn(state)) {
       if (transition.actionTypes.includes(action.type)) {
         return
       }
@@ -208,7 +210,7 @@ function validateTransition(state, action, transitions) {
 
 Die beiden Laufzeitfehler IllegalTransitionError und TransitionNotFoundError erben von der Error-Klasse und dienen der Unterscheidbarkeit.
 
-Damit die Validierungsfunktion bei jedem Zustandswechsel ausgeführt wird, muss die Übergangsfunktion bei Redux, \textit{Store.dispatch}, überschrieben werden.
+Die Validierungsfunktion wird vor der \textit{Store.dispatch} Methode ausgeführt. Damit dies gelingt, wird die folgende Funktion definiert und zum Versenden von Actions genutzt.
 
 \begin{lstlisting}
 function dispatchTransition(this, action) {
@@ -239,7 +241,7 @@ function createTransitionStore<S>(
     value: dispatchTransition,
   })
   
-  return store as TransitionStore<S>
+  return store
 }
 \end{lstlisting}
 
@@ -247,16 +249,9 @@ Die \textit{createTransitionStore}-API mit dem zusätzlichen \textit{transitions
 
 \begin{lstlisting}
 type TransitionStore<S, A> = {
-  validateTransition: (
-    state: S,
-    action: A,
-    transitions: Transitions<S>
-  ) => void
+  validateTransition: typeof validateTransition
   transitions: Transitions<S>
-  dispatchTransition: (
-    this: TransitionStore<S, A>,
-    action: BasicAction
-  ) => void
+  dispatchTransition: typeof dispatchTransition
 } & Store  
 \end{lstlisting}
 
@@ -264,7 +259,7 @@ Der TransitionStore kann per \textit{createTransitionStore} erstellt werden. Die
 
 \subsection{Pinia}
 
-Pinia verfügt über ein Plugin-System. Über dieses erhält man unter anderem Zugriff auf den Zustand und die Actions der aktiven Stores. Die Plugins werden beim Start der Applikation über die \textit{Pinia.use} API registriert.
+Pinia verfügt über ein Plugin-System. Über dieses erhält man unter anderem Zugriff auf den Zustand und die Actions der aktiven Stores. Die Plugins werden beim Start der Applikation über die \textit{Pinia.use} API registriert.\cite{piniaPluginSystem}
 
 Die Transition Map hat die gleiche Struktur wie die bei Redux. Allerdings wird das Feld \textit{actionTypes} zu \textit{action} umbenannt und steht für den Namen der Action im \textit{actions}-Objekt.
 
@@ -294,7 +289,7 @@ function transitions<S>(
   return ({ store }: PiniaUseCallbackArgs) => {
     const transitions = transitionsByStoreId[store.$id]
   
-    if (transitions) {
+    if (transitions !== undefined) {
       store.$onAction(({ name, store }) => {
         // name ist der Name der aktuellen Action
         validateTransition(store.$state, name, transitions)
@@ -313,7 +308,7 @@ function validateTransition<S, A extends string>(
   transitions: Transitions<S>
 ): void {
   for (const transition of transitions) {
-    if (transition.identityFn && transition.identityFn(state)) {
+    if (transition.identityFn(state)) {
       if (transition.actions.includes(action)) {
         return
       }
