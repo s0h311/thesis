@@ -2,27 +2,29 @@
 
 \section{Beantwortung der Forschungsfragen}
 
-Die Hauptgegenstände des \acrlong{ac:st}-Ansatzes sind die Erhöhung der Produktivität des Entwicklers oder der Entwicklerin und das Erkennen von Bugs in frühen Phasen der Entwicklung sowie des Testings im Umgang mit dem Applikationszustand. Um diese Ziele zu erreichen, werden die Zustandsübergänge übersichtlicher an einem zentralen Ort definiert und Laufzeitfehler bei Verstößen geworfen. Die Definition der Zustandsübergänge ist inspiriert von der Übergangsfunktion eines \acrshort{ac:dfa}s. Das liegt an der intuitiven Natur der DFAs und der starken Übereinstimmung im Aufbau mit dem Zustand eines Web-Frontends.
+Die Hauptgegenstände des \acrlong{ac:st}-Ansatzes sind die Erhöhung der Produktivität des Entwicklers und das Erkennen von Bugs in frühen Phasen der Entwicklung sowie des Testings im Umgang mit dem Applikationszustand. Um diese Ziele zu erreichen, werden die Zustandsübergänge übersichtlicher an einem zentralen Ort definiert und Laufzeitfehler bei Verstößen geworfen. Die Definition der Zustandsübergänge ist inspiriert von der Übergangsfunktion eines \acrshort{ac:dfa}s. Das liegt an der intuitiven Natur der DFAs und der starken Übereinstimmung im Aufbau mit dem Zustand eines Web-Frontends.
 
 Die drei zentralen Fragen, mit denen sich diese Arbeit beschäftigt, sind:
 
 \begin{enumerate}
-  \item Können Bugs, die aufgrund eines falschen Zustands entstehen, mit Hilfe von Strict Transitions reduziert werden?
+  \item Können Bugs, die aufgrund eines falschen Zustands entstehen, mithilfe von Strict Transitions reduziert werden?
   \item Steigt oder sinkt die \acrshort{ac:dx} durch die Einführung von Strict Transitions?
   \item Steigt oder sinkt die Lesbarkeit und Wartbarkeit des Codes durch die Einführung von Strict Transitions?
 \end{enumerate}
 
 \subsection{Reduzierung von Fehlern}
 
-Damit Fehler im Zustand auf ein Minimum reduziert werden, ist die Definition der zulässigen Zustandsübergänge (Transition Map) erforderlich. Folglich können keine unerlaubten, also undefinierten, Zustandsübergänge stattfinden. Allerdings ist der \acrshort{ac:st}-Ansatz ungeschützt vor fehlerhaften oder unvollständigen Definitionen. Eine Applikation mit einer Transition Map, die die gültigen Geschäftsprozesse und Nutzerinteraktionen nicht widerspiegelt, ist anfällig für Bugs, die im Zusammenhang mit dem State stehen. Diesem Faktor kann die leichte Testbarkeit der Transition Maps entgegenwirken. Trotz der erhöhten Übersichtlichkeit aufgrund des Aufbaus der Transition Maps sind Fehler nach wie vor möglich, auch wenn potenziell in geringerem Umfang. Aus diesem Grund kann keine definitive Antwort auf diese Frage mit den Methoden dieser Arbeit geliefert werden. Eine zutreffendere Antwort sollte auf den Einsatz des \acrshort{ac:st} in realen Applikationen und umfangreiches Testen basieren.
+Damit Fehler im Zustand auf ein Minimum reduziert werden, ist die Definition der zulässigen Zustandsübergänge (Transition Map) erforderlich. Folglich können keine unerlaubten, also undefinierten, Zustandsübergänge stattfinden. Allerdings ist der \acrshort{ac:st}-Ansatz ungeschützt vor fehlerhaften oder unvollständigen Definitionen. Eine Applikation mit einer Transition Map, die die gültigen Geschäftsprozesse und Nutzerinteraktionen nicht widerspiegelt, ist anfällig für Bugs, die im Zusammenhang mit dem State stehen. Diesem Faktor kann die leichte Testbarkeit der Transition Maps entgegenwirken. Trotz der erhöhten Übersichtlichkeit aufgrund des Aufbaus der Transition Maps sind Fehler nach wie vor möglich, auch wenn potenziell in geringerem Umfang. Aus diesem Grund kann keine definitive Antwort auf diese Frage mit den Methoden dieser Arbeit geliefert werden. Eine zutreffendere Antwort sollte auf den Einsatz des \acrshort{ac:st}-Ansatzes in größeren und verschiedenen Applikationen sowie umfangreiches Testen basieren.
 
 \subsection{Developer Experience}
 
-Auf den ersten Blick kann von einer Verschlechterung der \acrshort{ac:dx} ausgegangen werden. Der Grund hierfür ist die zusätzliche Aufgabe der Definition der Transition Map. Dieser zusätzliche Aufwand kann jedoch potenziell zukünftige Bugs verhindern und somit den Gesamtaufwand für Bugfixes reduzieren. Jedoch kann auch bei diesem Punkt keine definitive Schlussfolgerung mit den Methoden dieser Arbeit gezogen werden.
+Auf den ersten Blick kann von einer Verschlechterung der \acrshort{ac:dx} ausgegangen werden. Der Grund hierfür ist die zusätzliche Aufgabe der Definition der Transition Map. Dieser zusätzliche Aufwand kann jedoch potenziell zukünftige Bugs verhindern und somit den Gesamtaufwand für Bugfixes reduzieren. Jedoch kann auch bei diesem Punkt keine definitive Schlussfolgerung mit den Methoden dieser Arbeit gezogen werden. Dies liegt daran, dass \acrlong{ac:dx} ein äußert subjektiver Aspekt ist und beispielsweise mit mithilfe von Umfragen untersucht werden sollte.
 
 \subsection{Lesbarkeit und Wartbarkeit}
 
 Die Lesbarkeit und Wartbarkeit der gesamten Applikation bleiben unverändert. Die Lesbarkeit und Wartbarkeit der Transition Map sind hoch, da es sich hierbei um ein einfach testbares \acrshort{ac:pojo} handelt. Jeder dazukommende State muss in der Transition Map ergänzt werden, und genauso muss jeder entfernte State aus der Transition Map gelöscht werden.
+
+% TODO Lesbarkeit und Wartbarkeit updaten, widersprüchlich, siehe 6.2.3
 
 \section{Ausblick}
 
@@ -30,4 +32,4 @@ Um die ersten beiden Forschungsfragen endgültig zu beantworten, sollten eine we
 
 Die \acrshort{ac:dx} kann durch Linting Rules, z. B. für ESLint, gesteigert werden. So könnte beispielsweise darauf überprüft werden, dass jede definierte Action in mindestens einer Transition Map referenziert wird. Außerdem könnte mit Hilfe eines Language Servers überprüft werden, dass jeder State mindestens einer Identitätsfunktion zugeordnet werden kann. Ein visueller Editor für die Transition Map könnte die Nachvollziehbarkeit zusätzlich erhöhen und, wenn es um die Geschäftsprozesse geht, als Diskussionshilfe zwischen den Entwicklern und Product-Managern / Product-Ownern dienen.
 
-Im Rahmen dieser Arbeit wurden drei Implementierungen für die Libraries Redux, NgRx und Pinia entwickelt. Diese Auswahl könnte um Libraries wie Zustand und Redux Toolkit erweitert werden.
+Im Rahmen dieser Arbeit wurden drei Implementierungen für die Libraries Redux, NgRx und Pinia entwickelt. Diese Auswahl könnte um andere beliebten Libraries wie Zustand und Redux Toolkit erweitert werden.

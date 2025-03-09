@@ -1,6 +1,6 @@
 \chapter{Vergleich der Ansätze} \label{vergleich}
 
-Der in vorangegangen Kapiteln vorgestellte \acrlong{ac:st}-Ansatz erweitert die interne Funktionsweise einer \acrlong{ac:sm}-Lösung. Er erfordert die zusätzliche Definition einer TransitionMap und es werden leicht geänderte APIs dem Benutzer zur Verfügung gestellt. In diesem Kapitel werden die Standard Stores (unveränderte) zu den mit \acrlong{ac:st} verglichen. Es werden die quantifizierbaren Kennzahlen Lines of Code, Bundle Size und Performance untersucht. Außerdem werden die Aspekte \acrlong{ac:dx}, Fehleranfälligkeit, Wartbarkeit und Lesbarkeit analysiert.
+Der in vorangegangen Kapiteln vorgestellte \acrlong{ac:st}-Ansatz erweitert die interne Funktionsweise einer \acrlong{ac:sm}-Lösung. Er erfordert die zusätzliche Definition einer Transition Map und es werden leicht geänderte APIs dem Benutzer zur Verfügung gestellt. In diesem Kapitel werden die Standard Stores (unveränderte) zu den mit \acrlong{ac:st} verglichen. Es werden die quantifizierbaren Kennzahlen Lines of Code, Bundle Size und Performance untersucht. Außerdem werden die Aspekte \acrlong{ac:dx}, Fehleranfälligkeit, Wartbarkeit und Lesbarkeit analysiert.
 
 \section{Quantifizierbare Aspekte}
 \subsection{Lines of Code}
@@ -8,7 +8,7 @@ Der in vorangegangen Kapiteln vorgestellte \acrlong{ac:st}-Ansatz erweitert die 
 Bei React wurden die .js, .ts, .tsx und bei Vue die .ts und .vue Dateien untersucht. Alle anderen Dateitypen wurden ignoriert, da diese weder für die Geschäftslogik noch für die UI verantwortlich sind.
 
 \begin{table}[!ht]
-  \caption{Statische Analyse bei Redux und Pinia mit und ohne \acrshort{ac:st}}
+  \caption{Statische Analyse, Redux und Pinia mit und ohne \acrshort{ac:st}}
   \label{tab:staticAnalysisSTvsNoST}
 
   \begin{center}
@@ -40,14 +40,14 @@ Bei React wurden die .js, .ts, .tsx und bei Vue die .ts und .vue Dateien untersu
   \end{center}
 \end{table}
 
-Der relative Anstieg in \acrshort{ac:loc} beträgt bei React $\sim6\%$ und bei Vue $\sim12\%$. Darüber hinaus beträgt der absolute Anstieg jeweils 28 Lines und 32 Lines. Siehe (Tab. \ref{tab:staticAnalysisSTvsNoST})
+Der relative Anstieg in \acrshort{ac:loc} beträgt bei React $\sim6\%$ und bei Vue $\sim12\%$. Darüber hinaus beträgt der absolute Anstieg jeweils 28 Lines und 32 Lines. (Siehe Tab. \ref{tab:staticAnalysisSTvsNoST})
 
 \subsection{Bundle Size}
 
 Analysiert wurden die Production Bundles der Applikationen. Diese wurden mit dem Build-Tool Vite erstellt. Alle Applikationen nutzen ausschließlich Client Side Rendering. Daher ist es wichtig, dass die Bundles so klein wie möglich bleiben.
 
 \begin{table}[!ht]
-  \caption{Bundle Size Analyse bei Redux und Pinia mit und ohne \acrshort{ac:st}}
+  \caption{Bundle Size Analyse, Redux und Pinia mit und ohne \acrshort{ac:st}}
   \label{tab:bundleSizeAnalysisSTvsNoST}
 
   \begin{center}
@@ -67,14 +67,14 @@ Analysiert wurden die Production Bundles der Applikationen. Diese wurden mit dem
   \end{center}
 \end{table}
 
-Der relative Anstieg beträgt bei React $\sim0,6\%$ und bei Vue $\sim1\%$. Darüber hinaus beträgt der absolute Anstieg jeweils 0,98kB und 0,73kB. Der Anstieg in Bundle Size ist vernachlässigbar. Siehe (Tab. \ref{tab:bundleSizeAnalysisSTvsNoST})
+Der relative Anstieg beträgt bei React $\sim0,6\%$ und bei Vue $\sim1\%$. Darüber hinaus beträgt der absolute Anstieg jeweils 0,98kB und 0,73kB. Der Anstieg in Bundle Size ist vernachlässigbar. (Siehe Tab. \ref{tab:bundleSizeAnalysisSTvsNoST})
 
 \subsection{Performance}
 
 Um den Unterschied in Performance zu messen, wurde das Testing Tool Playwright verwendet. Mit Hilfe von Playwright wurde ein Szenario definiert. In diesem wurden alle Features der Webseite verwendet, welche Actions in Stores verursachen. Das Szenario wurde pro Applikation 20 Mal ausgeführt. Es lief im Chrome Browser und wurde mit Hilfe des Performance Tabs in den Chrome DevTools analysiert. Es wurden die Mittelwerte für Ausführungszeit in Millisekunden für die Browsertasks Scripting, Painting und Rendering ermittelt.
 
 \begin{table}[!ht]
-  \caption{Performance Analyse Redux und Pinia mit und ohne \acrshort{ac:st}}
+  \caption{Performance Analyse, Redux und Pinia mit und ohne \acrshort{ac:st}}
   \label{tab:performanceAnalysisSTvsNoST}
 
   \begin{center}
@@ -98,7 +98,7 @@ Um den Unterschied in Performance zu messen, wurde das Testing Tool Playwright v
   \end{center}
 \end{table}
 
-In allen Browsertasks, ausgenommen Scripting bei React, kann ein Rückgang in der Ausführungszeit beobachtet werden. Allerdings ist der Unterschied vernachlässigbar, da dieser sehr gering ist. Auch der Anstieg im Scripting bei React ist mit 0,89\% ebenfalls vernachlässigbar. Siehe (Tab. \ref{tab:performanceAnalysisSTvsNoST})
+In allen Browsertasks, ausgenommen Scripting bei React, kann ein Rückgang in der Ausführungszeit beobachtet werden. Allerdings ist der Unterschied vernachlässigbar, da dieser sehr gering ist. Auch der Anstieg im Scripting bei React ist mit 0,89\% ebenfalls vernachlässigbar. (Siehe Tab. \ref{tab:performanceAnalysisSTvsNoST})
 
 Die Gerätespezifikation und Versionen der verwendeten Technologien sind aus der Tabelle \ref{tab:specsAndVersions} im Anhang zu entnehmen.
 
@@ -107,13 +107,14 @@ Die Gerätespezifikation und Versionen der verwendeten Technologien sind aus der
 \subsection{Developer Experience}
 Die \acrshort{ac:dx} wird durch die zusätzliche Aufgabe der Definition einer Transition Map beeinflusst. Sie führt zu mehr Code und somit zu zusätzlichem Aufwand.
 
+% TODO mehr Text bei DX ?
+
 \subsection{Fehleranfälligkeit}
 Vorausgesetzt, die Transition Map bildet die zulässigen Übergänge vollständig und korrekt ab, kann sich die Applikation nicht in einem unzulässigen Zustand befinden. Obwohl sich hiermit die Fehlerstelle verlagert, ist diese zentral und nicht an vielen Orten verteilt. Falls sich die Applikation in einem falschen Zustand befindet, ist die Transition Map an einem zentralen Ort zu überprüfen, statt die ausgelösten Actions an vielen Orten.
 
 Darüber hinaus bildet die Transition Map die Abläufe in der Applikation ab und kann für eine bessere Nachvollziehbarkeit sorgen. Außerdem ist die Transition Map ein POJO und kann somit ohne weiteres Mocking getestet werden.
 
-\subsection{Lesbarkeit}
-Die Lesbarkeit des gesamten Applikationscodes bleibt unverändert, ausgenommen ist die hinzukommende Transition Map. Die Lesbarkeit der Transition Map wird hauptsächlich durch die enthaltenen Identitätsfunktionen beeinflusst. Für diese wird der Einsatz von Pure-Functions mit geringen Abzweigungen und Funktionsaufrufen empfohlen. Wenn dies eingehalten wird, ist die zyklomatische Komplexität gering, was in der Regel eine bessere Lesbarkeit impliziert. Jedoch hängt die Lesbarkeit stark von den Konventionen und dem Code Style des Authors ab.
+\subsection{Lesbarkeit und Wartbarkeit}
+Die Lesbarkeit des gesamten Applikationscodes bleibt unverändert, ausgenommen ist die hinzukommende Transition Map. Die Lesbarkeit der Transition Map wird hauptsächlich durch die enthaltenen Identitätsfunktionen beeinflusst. Für diese wird der Einsatz von Pure-Functions mit geringen Abzweigungen und Funktionsaufrufen empfohlen. Wenn dies eingehalten wird, ist die zyklomatische Komplexität gering, was in der Regel eine bessere Lesbarkeit impliziert. Jedoch hängt die Lesbarkeit stark von den Konventionen und dem Code Style des Authors ab. Jede hinzukommende Action oder State muss in der Transition Map berücksichtigt werden. Daher steigt die Wartbarkeit.
 
-\subsection{Wartbarkeit}
-Jede hinzukommende Action oder State muss in der Transition Map berücksichtigt werden. Daher steigt die Wartbarkeit.
+% TODO Mehr Text zur Wartbarkeit
