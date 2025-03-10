@@ -22,14 +22,15 @@ Auf den ersten Blick kann von einer Verschlechterung der \acrshort{ac:dx} ausgeg
 
 \subsection{Lesbarkeit und Wartbarkeit}
 
-Die Lesbarkeit und Wartbarkeit der gesamten Applikation bleiben unverändert. Die Lesbarkeit und Wartbarkeit der Transition Map sind hoch, da es sich hierbei um ein einfach testbares \acrshort{ac:pojo} handelt. Jeder dazukommende State muss in der Transition Map ergänzt werden, und genauso muss jeder entfernte State aus der Transition Map gelöscht werden.
-
-% TODO Lesbarkeit und Wartbarkeit updaten, widersprüchlich, siehe 6.2.3
+Die Lesbarkeit und Wartbarkeit der gesamten Applikation bleiben unverändert. Die Lesbarkeit und Wartbarkeit der Transition Map hängen jedoch stark von den Konventionen
+und dem Code Style der Autoren ab. Da es sich allerdings hierbei um ein einfach testbares \acrshort{ac:pojo} handelt, ist eine hohe Lesbarkeit und Wartbarkeit der Transition Map zumutbar. Auch, wenn jeder dazukommende State in der Transition Map ergänzt, und genauso jeder entfernte State aus der Transition Map gelöscht werden muss.
 
 \section{Ausblick}
 
-Um die ersten beiden Forschungsfragen endgültig zu beantworten, sollten eine weitreichendere Analyse und Umfragen stattfinden.
+Um die ersten beiden Forschungsfragen endgültig zu beantworten, sollten eine weitreichendere Analyse und Umfragen mit Entwicklern stattfinden.
 
-Die \acrshort{ac:dx} kann durch Linting Rules, z. B. für ESLint, gesteigert werden. So könnte beispielsweise darauf überprüft werden, dass jede definierte Action in mindestens einer Transition Map referenziert wird. Außerdem könnte mit Hilfe eines Language Servers überprüft werden, dass jeder State mindestens einer Identitätsfunktion zugeordnet werden kann. Ein visueller Editor für die Transition Map könnte die Nachvollziehbarkeit zusätzlich erhöhen und, wenn es um die Geschäftsprozesse geht, als Diskussionshilfe zwischen den Entwicklern und Product-Managern / Product-Ownern dienen.
+Die \acrshort{ac:dx} kann durch Linting Rules, z. B. für ESLint-Rules, gesteigert werden. So könnte beispielsweise darauf überprüft werden, dass jede definierte Action in mindestens einer Transition Map referenziert wird. Außerdem könnte mit Hilfe eines Language Servers überprüft werden, dass jeder State mindestens einer Identitätsfunktion zugeordnet werden kann. Ein visueller Editor für die Transition Map könnte die Nachvollziehbarkeit zusätzlich erhöhen und, wenn es um die Geschäftsprozesse geht, als Diskussionshilfe zwischen den Entwicklern und Product-Managern / Product-Ownern dienen.
 
 Im Rahmen dieser Arbeit wurden drei Implementierungen für die Libraries Redux, NgRx und Pinia entwickelt. Diese Auswahl könnte um andere beliebten Libraries wie Zustand und Redux Toolkit erweitert werden.
+
+Um unerlaubte Übergänge, die aufgrund von fehlerhaften Transition Maps entstehen, schneller zu erkennen, können Integrationen mit Observability- und Monitoring-Tools wie Grafana, Kibana und Datadog genutzt werden.
