@@ -4,7 +4,7 @@
 
 % Mehr Projekte nutzen TypeScript => sind bereits was Typing angeht robust
 % TypeScript ist auch in fast allen IDEs integriert, also wird fast von jedem genutzt.
-\acrlong{ac:ts} verfügt, im Gegensatz zu \acrlong{ac:js}, über statische Typisierung. Dank der statischen Typisierung sind statische Typeanalysen und Operationen wie \textit{Go to Definition} und \textit{Go to Implementations} der \acrshort{ac:ide}s möglich. Diese Eigenschaften reduzieren Fehler im Zusammenhang mit falschen Typen erheblich. Wie in \ref{fig:js-und-ts-nutzung-2018-2024} abgebildet, wird \acrlong{ac:ts} von immer mehr Entwicklern genutzt, während die \acrlong{ac:js}-Nutzung abnimmt. \ref{fig:js-und-ts-nutzung-2018-2024} beinhaltet die tatsächliche Nutzung von \acrshort{ac:ts} nicht. Der \acrlong{ac:tsc} ist in den meisten modernen \acrshort{ac:ide}s, wie Visual Studio Code und den JetBrains \acrshort{ac:ide}s wie IntelliJ IDEA und WebStorm integriert. Dies führt dazu, dass man auch beim \acrlong{ac:js}-Code einige Vorteile von \acrlong{ac:ts} bekommt.\cite{typeScriptDocumentary}
+\acrlong{ac:ts} verfügt, im Gegensatz zu JavaScript, über statische Typisierung. Dank der statischen Typisierung sind statische Typeanalysen und Operationen wie \textit{Go to Definition} und \textit{Go to Implementations} der \acrlong{ac:ide}s (\acrshort{ac:ide}) möglich. Diese Eigenschaften reduzieren Fehler im Zusammenhang mit falschen Typen erheblich. Wie in \ref{fig:js-und-ts-nutzung-2018-2024} abgebildet, wird \acrlong{ac:ts} von immer mehr Entwicklern genutzt, während die JavaScript-Nutzung abnimmt. \ref{fig:js-und-ts-nutzung-2018-2024} beinhaltet die tatsächliche Nutzung von \acrshort{ac:ts} nicht. Der TypeScript Compiler ist in den meisten modernen \acrshort{ac:ide}s, wie Visual Studio Code und den JetBrains \acrshort{ac:ide}s wie IntelliJ IDEA und WebStorm integriert. Dies führt dazu, dass man auch beim JavaScript-Code einige Vorteile von \acrlong{ac:ts} bekommt.\cite{typeScriptDocumentary}
 
 \begin{figure}[H]
   \includegraphics[width=0.85\textwidth]{js-und-ts-nutzung-2018-2024.png}
@@ -15,7 +15,7 @@
   [\citeyear{stackOverflowSurvey2021MostPopularTechnologies}],
   [\citeyear{stackOverflowSurvey2022MostPopularTechnologies}],
   [\citeyear{stackOverflowSurvey2023MostPopularTechnologies}] und
-  [\citeyear{stackOverflowSurvey2024MostPopularTechnologies}], Prozentuale Nutzung von \acrlong{ac:js} und \acrlong{ac:ts} unter professionellen Entwicklern von 2018 bis 2024}
+  [\citeyear{stackOverflowSurvey2024MostPopularTechnologies}], Prozentuale Nutzung von JavaScript und \acrlong{ac:ts} unter professionellen Entwicklern von 2018 bis 2024}
   \label{fig:js-und-ts-nutzung-2018-2024}
 \end{figure}
 
@@ -88,7 +88,7 @@ type IdentityFn<S> = (state: S) => boolean
 % Sei $S$ die Menge aller Zustände und $B := \{true, false\}$, dann wird die \textit{Konfition Funktion} wie folgt definiert:
 % $f(s) = b | s \in S \land b \in B$
 
-Mit dieser Funktion kann der Anwender für die Identifizierbarkeit der Zustände sorgen. Bei \acrlong{ac:js}-Klassen kann der \textit{instanceof}-Operator genutzt werden, um auf die Instanz einer Klasse wie \textit{Error} zu prüfen.\cite{jsInstanceofOperator} Des Weiteren können bei Objekten auf eindeutige Eigenschaften, wie die Präsenz eines Feldes per \textit{in}-Operator geprüft werden.\cite{jsInOperator} Bei Arrays kann die \textit{Array.isArray}-Funktion verwendet werden.\cite{jsIsArray} Durch die Kombination dieser und weiterer Funktionen und Operatoren können weitere Datentypen und Fälle identifiziert werden.
+Mit dieser Funktion kann der Anwender für die Identifizierbarkeit der Zustände sorgen. Bei JavaScript-Klassen kann der \textit{instanceof}-Operator genutzt werden, um auf die Instanz einer Klasse wie \textit{Error} zu prüfen.\cite{jsInstanceofOperator} Des Weiteren können bei Objekten auf eindeutige Eigenschaften, wie die Präsenz eines Feldes per \textit{in}-Operator geprüft werden.\cite{jsInOperator} Bei Arrays kann die \textit{Array.isArray}-Funktion verwendet werden.\cite{jsIsArray} Durch die Kombination dieser und weiterer Funktionen und Operatoren können weitere Datentypen und Fälle identifiziert werden.
 
 Die Übergangsliste lässt sich in einer Map wie folgt speichern:
 
