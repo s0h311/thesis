@@ -1,4 +1,4 @@
-\chapter{Vergleich der Ansätze} \label{vergleich}
+\chapter{Evaluation} \label{vergleich}
 
 Der in vorangegangen Kapiteln vorgestellte \acrlong{ac:st}-Ansatz erweitert die interne Funktionsweise einer \acrlong{ac:sm}-Lösung. Er erfordert die zusätzliche Definition einer Transition Map und es werden leicht geänderte APIs dem Benutzer zur Verfügung gestellt. In diesem Kapitel werden die Standard Stores (unveränderte) zu den mit \acrlong{ac:st} verglichen. Es werden die quantifizierbaren Kennzahlen \acrlong{ac:loc}, Bundle Size und Performance untersucht. Außerdem werden die Aspekte \acrlong{ac:dx}, Fehleranfälligkeit, Wartbarkeit und Lesbarkeit analysiert.
 
@@ -118,3 +118,11 @@ Darüber hinaus bildet die Transition Map die Abläufe in der Applikation ab und
 Die Lesbarkeit des gesamten Applikationscodes bleibt unverändert, ausgenommen ist die hinzukommende Transition Map. Die Lesbarkeit der Transition Map wird hauptsächlich durch die enthaltenen Identitätsfunktionen beeinflusst. Für diese wird der Einsatz von Pure-Functions mit geringen Abzweigungen und Funktionsaufrufen empfohlen. Wenn dies eingehalten wird, ist die zyklomatische Komplexität gering, was in der Regel eine bessere Lesbarkeit impliziert. Jedoch hängt die Lesbarkeit stark von den Konventionen und dem Code Style des Authors ab. Jede hinzukommende Action oder State muss in der Transition Map berücksichtigt werden. Daher sinkt die Wartbarkeit.
 
 % TODO Mehr Text zur Wartbarkeit
+
+\section{Verwandte Arbeiten}
+
+Obwohl es im Bereich \acrlong{ac:sm} viele Arbeiten gibt, die meistens in Form von konkreten Implementierungen sind, gibt es kaum Arbeiten, die sich mit Erhöhung der Korrektheit im \acrshort{ac:sm} beschäftigen.
+
+Die bekannteste dieser Arbeiten ist die XState Bibliothek. Diese verwendet unter anderem Konzepte aus event-basierter Programmierung und endlichen Automaten, um die Korrektheit des Applikationszustands zu gewährleisten. Genauso wie bei einem \acrshort{ac:dfa}, gibt es eine Übergangsfunktion und unerlaubte Übergänge werden blockiert. Es handelt sich um eine framework-agnostische Lösung mit hauptsächlichem Fokus auf React. Um die \acrlong{ac:dx} zu erhöhen wird zusätzlich noch ein visueller Editor zur Verfügung gestellt.\cite{xstate}
+
+Weitere relevante Arbeiten ergaben sich bei der Recherche nicht.
